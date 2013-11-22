@@ -1,29 +1,5 @@
 (in-package :xul)
 
-(defparameter *output* (make-xul-character-stream-sink *standard-output*))
-
-(cxml:with-xml-output *output*
-  (cxml:with-element "window"
-    (cxml:attribute "xmlns" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")
-    (cxml:with-element "label"
-      (cxml:attribute "control" "my-label")
-      (cxml:attribute "accesskey" "a")
-      (cxml:attribute "value" "Hello"))))
-
-(defparameter *test-app* (make-instance 'xul-application
-					:name "TestApp"
-					:top (make-instance 'window :title "Test application"
-							    :children (list (make-instance 'label
-											   :control "hello-label"
-											   :accesskey "a"
-											   :value "Hello")
-									    (make-instance 'label
-											   :control "bye-label"
-											   :accesskey "b"
-											   :value "Bye")))
-					:build-id "0001"
-					:id "TestApplication"))
-
 (defun make-app-folder (app path)
   (ensure-directories-exist path)
   (let* ((chrome-path (merge-pathnames #p"chrome/" path))
@@ -95,11 +71,41 @@
     (cxml:attribute "accesskey" (accesskey label))
     (cxml:attribute "value" (value label))))
 
+(defmethod serialize-xul ((vbox vbox))
+  (cxml:with-element "vbox"
+    (loop for child in (children vbox)
+	 do (serialize-xul child))))
+
 (make-app-folder *test-app* #p"/home/marian/src/lisp/cl-xul/test/app/")
 
 (defun run-app (app)
   (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
     (make-app-folder app app-folder)
     (sb-ext:run-program "/usr/bin/xulrunner" (list "-app" (format nil"~Aapplication.ini" app-folder)))))
+
+(defmacro xul (xul)
+  `(make-xul ',xul))
+
+(defun make-xul (xul)
+  (destructuring-bind (xul-element attributes &rest children) xul
+    (if children
+	(apply #'make-instance xul-element (cons :children
+						 (cons (mapcar #'make-xul children)
+						       attributes)))
+	(apply #'make-instance xul-element attributes))))
+
+(defparameter *test-app* (make-instance 'xul-application
+					:name "TestApp"
+					:top (xul
+					      (window (:title "Test application")
+						      (vbox ()
+							    (label (:control "hello-label"
+									     :accesskey "h"
+									     :value "Hello"))
+							    (label (:control "bye-label"
+									     :accesskey "b"
+									     :value "Bye")))))
+					:build-id "0001"
+					:id "TestApplication"))
 
 (run-app *test-app*)
