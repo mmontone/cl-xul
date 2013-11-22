@@ -206,10 +206,12 @@
       (cxml:with-xml-output output
 	(serialize-xul (top app)))))
 
+(defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
+
 (defun run-app (app)
   (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
     (make-app-folder app app-folder)
-    (sb-ext:run-program "/usr/bin/xulrunner" (list "-app" (format nil"~Aapplication.ini" app-folder)))))
+    (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder)))))
 
 (defmacro xul (xul)
   `(make-xul ',xul))
