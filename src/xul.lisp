@@ -59,7 +59,7 @@
 		      :type string
 		      :documentation "Specifies the minimum XULRunner version needed by this application. If there are binary components, MinVersion must equal the version of the libxul SDK which is used to build the application.")
    (gecko-max-version :initarg :gecko-max-version
-		      :initform "1.8.0.*"
+		      :initform "200.*"
 		      :accessor gecko-max-version
 		      :type string
 		      :documentation "Specify the maximum XULRunner version needed by this application. OPTIONAL - default value is any XULRunner less than XULRunner 2")
