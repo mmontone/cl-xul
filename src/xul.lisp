@@ -107,7 +107,7 @@
 (defclass xul-control (xul-element)
   ())
 
-(defclass window (xul-control)
+(defclass window (container-element)
   (accelerated chrome-margin disable-chrome disable-fast-find draw-in-title-bar
 	       fullscreen-button hide-chrome id lightweight-themes
 	       lightweight-themes-footer screenX screenY
@@ -120,3 +120,13 @@
 		      :initform (error "Provide the window title")
 		      :type string)
 	       window-type))
+
+(defclass label (xul-control)
+  ((accesskey :initarg :accesskey
+	      :accessor accesskey)
+   (control :initarg :control
+	    :accessor control)
+   crop disabled href
+   (value :initarg :value
+	  :accessor value)))
+	    

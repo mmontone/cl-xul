@@ -12,7 +12,15 @@
 
 (defparameter *test-app* (make-instance 'xul-application
 					:name "TestApp"
-					:top (make-instance 'window :title "Test application")
+					:top (make-instance 'window :title "Test application"
+							    :children (list (make-instance 'label
+											   :control "hello-label"
+											   :accesskey "a"
+											   :value "Hello")
+									    (make-instance 'label
+											   :control "bye-label"
+											   :accesskey "b"
+											   :value "Bye")))
 					:build-id "0001"
 					:id "TestApplication"))
 
@@ -75,12 +83,23 @@
       (cxml:with-xml-output output
 	(serialize-xul (top app)))))
 
-(defmethod serialize-xul ((xul-element window))
+(defmethod serialize-xul ((window window))
   (cxml:with-element "window"
     (cxml:attribute "xmlns" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")
-    (cxml:with-element "label"
-      (cxml:attribute "control" "my-label")
-      (cxml:attribute "accesskey" "a")
-      (cxml:attribute "value" "Hello")))) 
+    (loop for child in (children window)
+	 do (serialize-xul child))))
+
+(defmethod serialize-xul ((label label))
+  (cxml:with-element "label"
+    (cxml:attribute "control" (control label))
+    (cxml:attribute "accesskey" (accesskey label))
+    (cxml:attribute "value" (value label))))
 
 (make-app-folder *test-app* #p"/home/marian/src/lisp/cl-xul/test/app/")
+
+(defun run-app (app)
+  (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
+    (make-app-folder app app-folder)
+    (sb-ext:run-program "/usr/bin/xulrunner" (list "-app" (format nil"~Aapplication.ini" app-folder)))))
+
+(run-app *test-app*)
