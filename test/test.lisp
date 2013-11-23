@@ -34,6 +34,11 @@
 							 (menu-item (:label "New Image"))))
 				     (checkbox (:label "Enable JavaScript" :checked t))
 				     (checkbox (:label "Enable Java" :checked nil))
+				     (date-picker (:value "2007/03/26"))
+				     (date-picker (:type :grid))
+				     (date-picker (:type :popup :value "2008/08/24"))
+				     (color-picker (:color "#FF0000"))
+				     (color-picker (:type :button :color "#CC0080"))
 				     )))
 		 :build-id "0001"
 		 :id "TestApplication"))

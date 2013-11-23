@@ -45,7 +45,8 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "box")
 			 (:file "label")
 			 (:file "button")
-			 (:file "menu"))
+			 (:file "menu")
+			 (:file "picker"))
 			:serial t))
 	      :serial t))
     :serial t

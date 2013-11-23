@@ -2,7 +2,8 @@
 
 (define-xul-element button (container-element)
   (accesskey autocheck checkState checked command crop dir disabled dlgtype group
-	     icon image label (open* :attribute-name "open" :initarg :open) orient tabindex (type* :attribute-name "type" :initarg :type)))
+	     icon image label (open* :attribute-name "open" :initarg :open) orient tabindex (type* :attribute-name "type" :initarg :type))
+  (:documentation "A button that can be pressed by the user. Event handlers can be used to trap mouse, keyboard and other events. It is typically rendered as a grey outset rectangle. You can specify the label of the button using the label attribute or by placing content inside the button."))
 
 (define-xul-element checkbox (xul-element)
   (accesskey checked command crop disabled src label preference tabindex)
