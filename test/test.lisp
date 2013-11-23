@@ -39,6 +39,7 @@
 				     (date-picker (:type :popup :value "2008/08/24"))
 				     (color-picker (:color "#FF0000"))
 				     (color-picker (:type :button :color "#CC0080"))
+				     (time-picker (:value "12:05"))
 				     (grid ()
 					   (columns ()
 						    (column (:flex "1"))
