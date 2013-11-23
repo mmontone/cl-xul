@@ -38,9 +38,9 @@ OTHER DEALINGS IN THE SOFTWARE."
 	      :components
 	      ((:file "package")
 	       (:file "xul")
-	       (:module controls :components
+	       (:module widgets :components
 			((:file "mop")
-			 (:file "control")
+			 (:file "widget")
 			 (:file "window")
 			 (:file "box")
 			 (:file "label")
