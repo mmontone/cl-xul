@@ -43,7 +43,8 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "control")
 			 (:file "window")
 			 (:file "box")
-			 (:file "label"))
+			 (:file "label")
+			 (:file "button"))
 			:serial t))
 	      :serial t))
     :serial t
