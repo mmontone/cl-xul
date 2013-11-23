@@ -25,7 +25,8 @@
 (define-xul-element container-element (xul-element)
   ((children :initarg :children
 	     :initform nil
-	     :accessor children)
+	     :accessor children
+	     :attribute nil)
    ))
 
 (define-xul-element xul-control (xul-element)
@@ -42,7 +43,10 @@
 	 do
 	   (cxml:attribute (attribute-name attribute)
 			   (serialize-xml-value
-			    (slot-value xul-element (closer-mop:slot-definition-name attribute))))))))
+			    (slot-value xul-element (closer-mop:slot-definition-name attribute)))))
+      (when (typep xul-element 'container-element)
+	(loop for child in (children xul-element)
+	     do (serialize-xul child))))))
 
 (defmethod serialize-xml-value ((value (eql nil)))
   "false")

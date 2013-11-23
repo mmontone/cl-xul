@@ -17,6 +17,12 @@
 (defmethod serialize-xul ((window window))
   (cxml:with-element "window"
     (cxml:attribute "xmlns" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")
+    (loop for attribute in (attributes (class-of window))
+	 when (slot-boundp window (closer-mop:slot-definition-name attribute))
+	 do
+	   (cxml:attribute (attribute-name attribute)
+			   (serialize-xml-value
+			    (slot-value window (closer-mop:slot-definition-name attribute)))))
     (loop for child in (children window)
 	 do (serialize-xul child))))
 	    
