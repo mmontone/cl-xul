@@ -54,5 +54,8 @@
 (defmethod serialize-xml-value ((value (eql t)))
   "true")
 
+(defmethod serialize-xml-value ((value symbol))
+  (string-downcase (symbol-name value)))
+
 (defmethod serialize-xml-value (x)
   (princ-to-string x))
