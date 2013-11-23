@@ -1,13 +1,13 @@
 (in-package :xul)
 
-(defclass box (container-element)
+(define-xul-element box (container-element)
   ())
 
-(defclass hbox (box)
+(define-xul-element hbox (box)
   ()
   (:default-initargs :orient :horizontal))
 
-(defclass vbox (box)
+(define-xul-element vbox (box)
   ()
   (:default-initargs :orient :vertical))
 

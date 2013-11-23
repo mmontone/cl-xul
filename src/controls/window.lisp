@@ -1,6 +1,6 @@
 (in-package :xul)
 
-(defclass window (container-element)
+(define-xul-element window (container-element)
   (accelerated chrome-margin disable-chrome disable-fast-find draw-in-title-bar
 	       fullscreen-button hide-chrome id lightweight-themes
 	       lightweight-themes-footer screenX screenY
