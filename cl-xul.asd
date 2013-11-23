@@ -37,7 +37,13 @@ OTHER DEALINGS IN THE SOFTWARE."
     ((:module src
 	      :components
 	      ((:file "package")
-	       (:file "xul"))
+	       (:file "xul")
+	       (:module controls :components
+			((:file "control")
+			 (:file "window")
+			 (:file "box")
+			 (:file "label"))
+			:serial t))
 	      :serial t))
     :serial t
     :depends-on
