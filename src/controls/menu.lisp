@@ -24,6 +24,6 @@
   (acceltext accesskey allowevents command crop disabled image label selected tabindex value)
   (:documentation "Used to create a separator between menu items. Typically drawn as a thin line."))
 
-(define-xul-element menu-list (xul-element)
-  (accesskey crop disableautoselect disabled editable focused image label oncommand open preference readonly sizetopopup tabindex value)
+(define-xul-element menu-list (container-element)
+  (accesskey crop disableautoselect disabled editable focused image label oncommand (open* :initarg :open :attribute-name "open") preference readonly sizetopopup tabindex value)
   (:documentation "An element that can be used for drop-down choice lists. The user may select one of the elements displayed in the menulist. The currently selected choice is displayed on the menulist element. To create the drop-down, put a menupopup inside the menulist containing the choices as menuitem elements. The command event may be used to execute code when the menulist selection changes."))
