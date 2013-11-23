@@ -3,7 +3,7 @@
 (defparameter *test-app*
   (make-instance 'xul-application
 		 :name "TestApp"
-		 :top (xul
+		 :xul (xul
 		       (window (:title "Test application")
 			       (vbox ()
 				     (label (:control "hello-label"

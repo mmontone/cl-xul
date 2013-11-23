@@ -63,10 +63,10 @@
 		      :accessor gecko-max-version
 		      :type string
 		      :documentation "Specify the maximum XULRunner version needed by this application. OPTIONAL - default value is any XULRunner less than XULRunner 2")
-   (top :initarg :top
-	 :initform (error "Provide the top element")
-	 :accessor top
-	 :type xul-element)))
+   (xul :initarg :xul
+	:initform (error "Provide the xul")
+	:accessor app-xul
+	:type xul-element)))
 
 (defmethod print-object ((app xul-application) stream)
   (print-unreadable-object (app stream :type t :identity t)
@@ -132,7 +132,7 @@
 (defun generate-xul (app stream)
   (let ((output (make-xul-character-stream-sink stream)))
       (cxml:with-xml-output output
-	(serialize-xul (top app)))))
+	(serialize-xul (app-xul app)))))
 
 (defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
 
