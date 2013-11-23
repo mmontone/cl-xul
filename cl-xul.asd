@@ -45,6 +45,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "box")
 			 (:file "label")
 			 (:file "button")
+			 (:file "text")
 			 (:file "menu")
 			 (:file "picker")
 			 (:file "grid"))

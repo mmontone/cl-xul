@@ -55,6 +55,8 @@
 										  (menu-item (:label "Accounts"))
 										  (menu-item (:label "Sales" :selected t))
 										  (menu-item (:label "Support"))))))))
+				     (description (:value "This is a long section of text that will word wrap when displayed."))
+				     (text-box (:id "your-name" :value "John"))
 				     )))
 		 :build-id "0001"
 		 :id "TestApplication"))
