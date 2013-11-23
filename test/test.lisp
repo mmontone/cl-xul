@@ -11,7 +11,9 @@
 						      :value "Hello"))
 				     (label (:control "bye-label"
 						      :accesskey "b"
-						      :value "Bye")))))
+						      :value "Bye"))
+				     (button (:label "Hello"
+						     :on-command "alert('Hello!!');")))))
 		 :build-id "0001"
 		 :id "TestApplication"))
 
