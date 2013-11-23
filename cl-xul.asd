@@ -39,7 +39,8 @@ OTHER DEALINGS IN THE SOFTWARE."
 	      ((:file "package")
 	       (:file "xul")
 	       (:module controls :components
-			((:file "control")
+			((:file "mop")
+			 (:file "control")
 			 (:file "window")
 			 (:file "box")
 			 (:file "label"))
@@ -53,4 +54,5 @@ OTHER DEALINGS IN THE SOFTWARE."
      :fiveam
      :cl-who
      :parenscript
-     :cxml))
+     :cxml
+     :closer-mop))
