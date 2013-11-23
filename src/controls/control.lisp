@@ -29,7 +29,7 @@
 	     :attribute nil)
    ))
 
-(define-xul-element xul-widget (xul-element)
+(define-xul-element xul-control (xul-element)
   ())
 
 (defgeneric serialize-xul (xul-element))

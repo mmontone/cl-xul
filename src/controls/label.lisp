@@ -1,6 +1,6 @@
 (in-package :xul)
 
-(define-xul-element label (xul-widget)
+(define-xul-element label (xul-control)
   ((accesskey :initarg :accesskey
 	      :accessor accesskey)
    (control :initarg :control
