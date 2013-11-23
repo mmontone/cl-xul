@@ -31,7 +31,10 @@
 				     (button (:type "menu-button" :label "New")
 					     (menu-popup ()
 							 (menu-item (:label "New Document"))
-							 (menu-item (:label "New Image")))))))
+							 (menu-item (:label "New Image"))))
+				     (checkbox (:label "Enable JavaScript" :checked t))
+				     (checkbox (:label "Enable Java" :checked nil))
+				     )))
 		 :build-id "0001"
 		 :id "TestApplication"))
 
