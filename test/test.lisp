@@ -27,7 +27,11 @@
 						      :accesskey "b"
 						      :value "Bye"))
 				     (button (:label "Hello"
-						     :on-command "alert('Hello!!');")))))
+						     :on-command "alert('Hello!!');"))
+				     (button (:type "menu-button" :label "New")
+					     (menu-popup ()
+							 (menu-item (:label "New Document"))
+							 (menu-item (:label "New Image")))))))
 		 :build-id "0001"
 		 :id "TestApplication"))
 

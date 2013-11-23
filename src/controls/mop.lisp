@@ -21,6 +21,7 @@
 		 :documentation "Whether the slot is a XUL attribute")
    (attribute-name :initarg :attribute-name
 		   :initform nil
+		   :writer (setf attribute-name)
 		   :type (or null string)
 		   :documentation "The attribute name")))
 
@@ -58,6 +59,8 @@
    (let ((effective-slot (call-next-method)))
      (setf (is-attribute effective-slot)
            (some #'is-attribute direct-slots))
+     (setf (attribute-name effective-slot)
+	   (some #'attribute-name direct-slots))
      effective-slot))
 
 (defmethod initialize-instance :after ((slot xul-effective-slot-definition) &rest initargs)
