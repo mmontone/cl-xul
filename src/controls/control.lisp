@@ -3,10 +3,27 @@
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defmacro define-xul-element
     (name super-elements attributes &rest options)
-  `(defclass ,name ,super-elements
-     ,attributes
-     (:metaclass xul-class)
-     ,@options)))
+  `(progn
+     (defclass ,name ,super-elements
+       ,attributes
+       (:metaclass xul-class)
+       ,@options)
+     (defmacro ,(intern (symbol-name name) :xul-builder)
+	 (attributes &body body)
+       `(let ((element (make-instance ',',name ,@attributes)))
+         (when (null *current-element*)
+	   (error "Can't bind ~A to a null *current-element*. Make sure this is being called under a with-xul scope" element))
+	 (if (equalp *current-element* t)
+	     (progn
+	       (let ((*current-element* element))
+		 ,@body)
+	       element)
+	     (progn
+	       (setf (children *current-element*) (append (children *current-element*) (list element)))
+	       (let ((*current-element* element))
+		 ,@body)
+	       element))))
+     (export ',(intern (symbol-name name) :xul-builder) :xul-builder))))
 
 (define-xul-element xul-element ()
   (align allow-events allow-negative-assertions

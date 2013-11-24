@@ -151,3 +151,12 @@
 						 (cons (mapcar #'make-xul children)
 						       attributes)))
 	(apply #'make-instance xul-element attributes))))
+
+(defparameter *current-element* nil)
+
+(defmacro with-xul (&body body)
+  `(call-with-xul (lambda () ,@body)))
+
+(defun call-with-xul (function)
+  (let ((*current-element* t))
+    (funcall function)))
