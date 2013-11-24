@@ -4,13 +4,15 @@
   (defmacro define-xul-element
     (name super-elements attributes &rest options)
   `(progn
+
      (defclass ,name ,super-elements
        ,attributes
        (:metaclass xul-class)
        ,@options)
+     
      (defmacro ,(intern (symbol-name name) :xul-builder)
-	 (attributes &body body)
-       `(let ((element (make-instance ',',name ,@attributes)))
+	 (&body body)
+       `(let ((element (make-instance ',',name)))
          (when (null *current-element*)
 	   (error "Can't bind ~A to a null *current-element*. Make sure this is being called under a with-xul scope" element))
 	 (if (equalp *current-element* t)
@@ -23,7 +25,22 @@
 	       (let ((*current-element* element))
 		 ,@body)
 	       element))))
-     (export ',(intern (symbol-name name) :xul-builder) :xul-builder))))
+     (export ',(intern (symbol-name name) :xul-builder) :xul-builder)
+
+     ,@(loop for attribute in attributes
+	  collect
+	    (let* ((attribute-name (if (symbolp attribute)
+				     attribute
+				     (first attribute)))
+		   (attribute-builder-name (intern (format nil "~A=" attribute-name) :xul-builder)))
+	      `(progn
+		 (defmacro ,attribute-builder-name (value)
+		   `(setf (,',attribute-name *current-element*) ,value))
+		 (export ',attribute-builder-name :xul-builder)))
+     
+     ))))
+
+  
 
 (define-xul-element xul-element ()
   (align allow-events allow-negative-assertions
