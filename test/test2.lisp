@@ -16,7 +16,7 @@
 			       (<:menu-item (<:label= "Save")
 					    (<:disabled= "true"))
 			       (<:menu-item (<:label= "Close"))
-			       (<:menu-separator ())
+			       (<:menu-separator)
 			       (<:menu-item (<:label= "Quit"))))
 			   (<:menu (<:id= "edit-menu")
 				   (<:label= "Edit")
@@ -24,7 +24,10 @@
 			       (<:id= "edit-popup")
 			       (<:menu-item (<:label= "Undo"))
 			       (<:menu-item (<:label= "Redo")))))
-			       ))
+			 (<:vbox
+			   (<:box (<:label (<:value= "hello")))
+			   (<:box (<:button (<:label= "Hello")))))
+			       )
 		 :build-id "0001"
 		 :id "TestApplication"))
 

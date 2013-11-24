@@ -63,4 +63,6 @@ OTHER DEALINGS IN THE SOFTWARE."
      :cl-who
      :parenscript
      :cxml
-     :closer-mop))
+     :closer-mop
+     :clws
+     :cl-json))
