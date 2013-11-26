@@ -22,9 +22,10 @@
        (cxml:with-element "script"
 	 ;(cxml:attribute "language" "javascript")
 	 (cxml:attribute "type" "application/javascript")
-	 (cxml:attribute "src" (format nil "chrome://myapp/content/a~a.~a"
-				       (pathname-name javascript)
-				       (pathname-type javascript)))))
+	 (cxml:attribute "src"
+			 (format nil "chrome://~a/content/~a.~a"
+				 (name *app*)
+				 (pathname-name javascript)
+				 (pathname-type javascript)))))
   (loop for child in (children window)
      do (serialize-xul child))))
-	    

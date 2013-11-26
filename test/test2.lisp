@@ -26,7 +26,8 @@
 			       (<:menu-item (<:label= "Redo")))))
 			 (<:vbox
 			   (<:box (<:label (<:value= "hello")))
-			   (<:box (<:button (<:label= "Hello")))))
+			   (<:box (<:button (<:label= "Hello")
+					    (<:on-command= "alert('Hello');")))))
 			       )
 		 :build-id "0001"
 		 :id "TestApplication"))

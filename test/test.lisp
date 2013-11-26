@@ -2,7 +2,7 @@
 
 (defparameter *test-app*
   (make-instance 'xul-application
-		 :name "TestApp"
+		 :name "testapp"
 		 :javascripts (list (asdf::system-relative-pathname :cl-xul #p"test/test-app.js"))
 		 :xul (xul
 		       (window (:title "Test application"
@@ -90,7 +90,9 @@
 							       (list-cell (:label "Candle Maker" )))
 						    (list-item ()
 							       (list-cell (:label "Roger"))
-							       (list-cell (:label "Swashbuckler"))))))))
+							       (list-cell (:label "Swashbuckler"))))
+					   
+					   ))))
 		 :build-id "0001"
 		 :id "TestApplication"))
 

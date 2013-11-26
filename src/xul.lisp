@@ -128,10 +128,10 @@
   (format stream "MaxVersion=~a~%" (gecko-max-version app)))
 
 (defun generate-chrome-manifest (app stream)
-  (format stream "content myapp file:chrome/content/"))
+  (format stream "content ~A file:chrome/content/" (name app)))
 
 (defun generate-preferences (app stream)
-  (format stream "pref(\"toolkit.defaultChromeURI\", \"chrome://myapp/content/main.xul\");~%")
+  (format stream "pref(\"toolkit.defaultChromeURI\", \"chrome://~A/content/main.xul\");~%" (name app))
   (format stream "/* debugging prefs, disable these before you deploy your application! */~%")
   (format stream "pref(\"browser.dom.window.dump.enabled\", true);~%")
   (format stream "pref(\"javascript.options.showInConsole\", true);~%")
