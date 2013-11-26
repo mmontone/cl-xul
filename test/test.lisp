@@ -3,6 +3,7 @@
 (defparameter *test-app*
   (make-instance 'xul-application
 		 :name "TestApp"
+		 :javascripts (list (asdf::system-relative-pathname :cl-xul #p"test/test-app.js"))
 		 :xul (xul
 		       (window (:title "Test application"
 				       :width "500"

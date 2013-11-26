@@ -66,7 +66,10 @@
    (xul :initarg :xul
 	:initform (error "Provide the xul")
 	:accessor app-xul
-	:type xul-element)))
+	:type xul-element)
+   (javascripts :initarg :javascripts
+		:initform nil
+		:accessor javascripts)))
 
 (defmethod print-object ((app xul-application) stream)
   (print-unreadable-object (app stream :type t :identity t)
@@ -104,7 +107,14 @@
     (with-open-file (stream (merge-pathnames "main.xul" content-path) :direction :output
 			    :if-exists :supersede
 			    :if-does-not-exist :create)
-      (generate-xul app stream))))
+      (generate-xul app stream))
+    
+    ;; Install javascript files
+    (loop for javascript in (javascripts app)
+       do
+	 (let ((filename (make-pathname :name (pathname-name javascript)
+					:type (pathname-type javascript))))
+	   (cl-fad:copy-file javascript (merge-pathnames filename content-path) :overwrite t)))))
 
 (defun generate-initialization (app stream)
   (format stream "[App]~%")
@@ -131,15 +141,19 @@
 
 (defun generate-xul (app stream)
   (let ((output (make-xul-character-stream-sink stream)))
-      (cxml:with-xml-output output
-	(serialize-xul (app-xul app)))))
+    (cxml:with-xml-output output
+      (serialize-xul (app-xul app))))
+  stream)
 
 (defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
 
+(defparameter *app* nil "Currently running application")
+
 (defun run-app (app)
-  (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
-    (make-app-folder app app-folder)
-    (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder)))))
+  (let ((*app* app))
+    (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
+      (make-app-folder app app-folder)
+      (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))))
 
 (defmacro xul (xul)
   `(make-xul ',xul))

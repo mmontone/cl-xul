@@ -15,6 +15,16 @@
 	   (cxml:attribute (attribute-name attribute)
 			   (serialize-xml-value
 			    (slot-value window (closer-mop:slot-definition-name attribute)))))
-    (loop for child in (children window)
-	 do (serialize-xul child))))
+    ;; Bind javascripts
+    ;; Bind javascript files
+  (loop for javascript in (javascripts *app*)
+     do 
+       (cxml:with-element "script"
+	 ;(cxml:attribute "language" "javascript")
+	 (cxml:attribute "type" "application/javascript")
+	 (cxml:attribute "src" (format nil "chrome://myapp/content/a~a.~a"
+				       (pathname-name javascript)
+				       (pathname-type javascript)))))
+  (loop for child in (children window)
+     do (serialize-xul child))))
 	    
