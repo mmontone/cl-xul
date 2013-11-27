@@ -23,6 +23,8 @@ connection.onerror = function (error) {
 
 // Log messages from the server
 connection.onmessage = function (e) {
+  alert(e.data);
+  eval(e.data);
   dump('Server: ' + e.data);
 };
 
