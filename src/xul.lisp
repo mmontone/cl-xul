@@ -154,7 +154,52 @@
   (let ((*app* app))
     (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
       (make-app-folder app app-folder)
-      (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))))
+      (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))
+    ;; Start a web socket connection
+    (bordeaux-threads:make-thread
+     (lambda ()
+       (clws:run-server 12345))
+     :name "websockets server")
+
+    (bordeaux-threads:make-thread
+     (lambda ()
+       (clws:run-resource-listener
+	(clws:find-global-resource "/echo")))
+     :name "resource listener for /echo")
+    ))
+
+(defclass echo-resource (clws:ws-resource)
+  ())
+
+(defmethod resource-client-connected ((res echo-resource) client)
+  (break "got connection on echo server from ~s : ~s~%"
+	  (clws:client-host client)
+	  (clws:client-port client))
+  (format t "got connection on echo server from ~s : ~s~%"
+	  (clws:client-host client)
+	  (clws:client-port client))
+  t)
+
+(defmethod resource-client-disconnected ((resource echo-resource) client)
+  (break "Client disconnected from resource ~A: ~A~%" resource client)
+  (format t "Client disconnected from resource ~A: ~A~%" resource client))
+
+(defmethod resource-received-text ((res echo-resource) client message)
+  (break "got frame ~s from client ~s" message client)
+  (format t "got frame ~s from client ~s" message client)
+  (clws:write-to-client-text client message))
+
+(defmethod resource-received-binary((res echo-resource) client message)
+  (break "got binary frame ~s from client ~s" (length message) client)
+  (format t "got binary frame ~s from client ~s" (length message) client)
+  (clws:write-to-client-binary client message))
+
+(clws:register-global-resource "/echo"
+			       (make-instance 'echo-resource)
+			       ;(clws:origin-prefix "http://127.0.0.1" "http://localhost")
+			       ;(clws:origin-prefix "ws://127.0.0.1" "ws://localhost")
+			       #'ws::any-origin
+			       )
 
 (defmacro xul (xul)
   `(make-xul ',xul))
