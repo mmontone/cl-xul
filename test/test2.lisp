@@ -2,7 +2,8 @@
 
 (defparameter *test-app-2*
   (make-instance 'xul-application
-		 :name "TestApp"
+		 :name "test2"
+		 :javascripts (list (asdf::system-relative-pathname :cl-xul #p"test/test-app.js"))
 		 :xul (with-xul
 		       (<:window (<:title= "Test application")
 				 (<:width= "500")
@@ -27,8 +28,10 @@
 			 (<:vbox
 			   (<:box (<:label (<:value= "hello")))
 			   (<:box (<:button (<:label= "Hello")
-					    (<:on-command= "alert('Hello');")))))
-			       )
+					    (on-command=* (break "Hello!!")))
+				  (<:button (<:label= "Connection")
+					    (<:on-command= "alert(connection.readyState);"))))
+			       ))
 		 :build-id "0001"
 		 :id "TestApplication"))
 

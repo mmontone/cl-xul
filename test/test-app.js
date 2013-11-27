@@ -11,12 +11,13 @@ var connection = new WebSocket('ws://localhost:9998/echo');
 
 // When the connection is open, send some data to the server
 connection.onopen = function () {
-  connection.send('Ping'); // Send the message 'Ping' to the server
+  //connection.send('Ping'); // Send the message 'Ping' to the server
   dump('Opening connection');
 };
 
 // Log errors
 connection.onerror = function (error) {
+  alert(error.data);
   dump('WebSocket Error ' + error.data);
   
 };
@@ -29,5 +30,11 @@ connection.onmessage = function (e) {
 };
 
 connection.onclose = function (e) {
+    alert('Websocket closing!!' + e.code + e.reason + e.wasClean);
     dump('Close ' + e.code + ':' + e.reason);
 };
+
+function sendMessage(message) {
+    alert ('Sending ' + message);
+    connection.send(message);
+}

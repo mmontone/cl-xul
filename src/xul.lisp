@@ -196,11 +196,19 @@
   (format t "Client disconnected from resource ~A: ~A~%" resource client))  
 
 (defmethod clws:resource-received-text ((res echo-resource) client message)
-  ;(break "got frame ~s from client ~s" message client)
+  (break "got frame ~s from client ~s" message client)
   (format t "got frame ~s from client ~s" message client)
   ;(clws:write-to-client-text client message)
-  (clws:write-to-client-text client "alert('Websocke connected!!');")
-  )
+  (let ((object (ignore-errors (json:decode-json-from-string message))))
+    ;(break "~A" object)
+    (if (not object)
+	(error "~A could'nt be parsed" message)
+	;else
+	(cond
+	  ((equalp (cdr (assoc :type object)) "callback")
+	   (handle-callback object))
+	  (t (break "Don't know how to handle ~A" object))))
+    t))
 
 (defmethod clws:resource-received-binary((res echo-resource) client message)
   ;(break "got binary frame ~s from client ~s" (length message) client)

@@ -146,30 +146,36 @@
      (:metaclass component-class)
      ,@options))
 
-(define-component my-component ()
-  ())
+(defparameter *callback-handlers* (make-hash-table :test #'equalp))
 
-(defmethod initialize-instance :after ((component my-component) &rest initargs)
-  (add-component component 'counter-1 (make-instance 'counter :counter 0))
-  (add-component component 'counter-2 (make-instance 'counter :counter 3)))
+(defun get-callback-handler (id)
+  (or (gethash id *callback-handlers*)
+      (progn
+	;(break "~A not found" id) 
+	(error "Callback handler with id ~A not found" id))))
 
-(defmethod render-component ((component my-component))
-  (with-child-components (counter-1 counter-2) component
-    (render counter-1)
-    (<:label (<:value= "Hello"))
-    (render counter-2)))
+(defun register-callback-handler (function)
+  (let ((id (symbol-name (gensym "CH-"))))
+    (setf (gethash id *callback-handlers*)
+	  function)
+    id))
 
-(define-component counter ()
-  ((counter :accessor counter
-	    :type integer
-	    :initform 0
-	    :initarg :counter)))
+(defun handle-callback (callback)
+  (break "Handling callback: ~A" callback)
+  (let ((handler-id (cdr (assoc :id callback))))
+    (let ((handler (get-callback-handler handler-id)))
+      ;(break "~A" handler)
+      (funcall handler))))
 
-(defmethod render-component ((counter counter))
-  (<:label (<:value= (counter counter)))
-  (<:button (<:label= "Increment")
-	    (<:on-command= (lambda ()
-			     (incf (counter counter)))))
-  (<:button (<:label= "Decrement")
-	    (<:on-command= (lambda ()
-			     (decf (counter counter))))))
+(defun on-command= (function)
+  (let ((handler-id
+	 (register-callback-handler function)))
+    (<:on-command= (format nil "sendMessage('{\"type\":\"callback\", \"id\":\"~A\"}');"
+			   handler-id))))
+
+(defmacro on-command=* (&body body)
+  `(on-command= (lambda () ,@body)))
+						   
+(defmethod render ((component component))
+  (render-component component))
+  

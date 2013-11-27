@@ -52,7 +52,8 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "toolbar")
 			 (:file "picker")
 			 (:file "grid"))
-			:serial t))
+			:serial t)
+	       (:file "component"))
 	      :serial t))
     :serial t
     :depends-on
