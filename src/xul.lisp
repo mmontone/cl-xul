@@ -137,7 +137,8 @@
   (format stream "pref(\"javascript.options.showInConsole\", true);~%")
   (format stream "pref(\"javascript.options.strict\", true);~%")
   (format stream "pref(\"nglayout.debug.disable_xul_cache\", true);~%")
-  (format stream "pref(\"nglayout.debug.disable_xul_fastload\", true);~%"))
+  (format stream "pref(\"nglayout.debug.disable_xul_fastload\", true);~%")
+  (format stream "pref(\"devtools.debugger.remote-enabled\", true);~%"))
 
 (defun generate-xul (app stream)
   (let ((output (make-xul-character-stream-sink stream)))

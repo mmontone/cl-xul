@@ -1,11 +1,8 @@
-function startXUL () {
-    alert('Hello');
+Components.utils.import('resource://gre/modules/devtools/dbg-server.jsm');
+if (!DebuggerServer.initialized) {
+  DebuggerServer.init();
+  DebuggerServer.addBrowserActors();
 }
+DebuggerServer.openListener(6000);
 
-window.addEventListener('load', startXUL, false);
-
-function InitWindow() {
-    alert('asdf');
-}
-
-alert('hihi');
+dump('This is a test application!!');
