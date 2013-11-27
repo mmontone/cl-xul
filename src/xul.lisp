@@ -158,7 +158,7 @@
     ;; Start a web socket connection
     (bordeaux-threads:make-thread
      (lambda ()
-       (clws:run-server 12345))
+       (clws:run-server 9998))
      :name "websockets server")
 
     (bordeaux-threads:make-thread
@@ -171,7 +171,7 @@
 (defclass echo-resource (clws:ws-resource)
   ())
 
-(defmethod resource-client-connected ((res echo-resource) client)
+(defmethod clws:resource-client-connected ((res echo-resource) client)
   (break "got connection on echo server from ~s : ~s~%"
 	  (clws:client-host client)
 	  (clws:client-port client))
@@ -180,16 +180,16 @@
 	  (clws:client-port client))
   t)
 
-(defmethod resource-client-disconnected ((resource echo-resource) client)
+(defmethod clws:resource-client-disconnected ((resource echo-resource) client)
   (break "Client disconnected from resource ~A: ~A~%" resource client)
   (format t "Client disconnected from resource ~A: ~A~%" resource client))
 
-(defmethod resource-received-text ((res echo-resource) client message)
+(defmethod clws:resource-received-text ((res echo-resource) client message)
   (break "got frame ~s from client ~s" message client)
   (format t "got frame ~s from client ~s" message client)
   (clws:write-to-client-text client message))
 
-(defmethod resource-received-binary((res echo-resource) client message)
+(defmethod clws:resource-received-binary((res echo-resource) client message)
   (break "got binary frame ~s from client ~s" (length message) client)
   (format t "got binary frame ~s from client ~s" (length message) client)
   (clws:write-to-client-binary client message))

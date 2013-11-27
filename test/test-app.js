@@ -7,7 +7,7 @@ DebuggerServer.openListener(6000);
 
 dump('This is a test application!!');
 
-var connection = new WebSocket('ws://localhost/echo', ['soap', 'xmpp']);
+var connection = new WebSocket('ws://localhost:9998/echo');
 
 // When the connection is open, send some data to the server
 connection.onopen = function () {
