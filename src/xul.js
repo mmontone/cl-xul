@@ -1,9 +1,9 @@
-Components.utils.import('resource://gre/modules/devtools/dbg-server.jsm');
-if (!DebuggerServer.initialized) {
-  DebuggerServer.init();
-  DebuggerServer.addBrowserActors();
-}
-DebuggerServer.openListener(6000);
+// Components.utils.import('resource://gre/modules/devtools/dbg-server.jsm');
+// if (!DebuggerServer.initialized) {
+//   DebuggerServer.init();
+//   DebuggerServer.addBrowserActors();
+// }
+// DebuggerServer.openListener(6000);
 
 var connection = new WebSocket('ws://localhost:9998/echo');
 
