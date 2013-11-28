@@ -10,9 +10,9 @@
 
 (defmethod render-component ((counters counters))
   (with-child-components (counter-1 counter-2) counters
-    (render-component counter-1)
-    (<:label (<:value= "Hello"))
-    (render-component counter-2)))
+    (<:vbox
+      (render-component counter-1)
+      (render-component counter-2))))
 
 (define-component counter ()
   ((counter :accessor counter

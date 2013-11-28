@@ -17,7 +17,7 @@ connection.onopen = function () {
 
 // Log errors
 connection.onerror = function (error) {
-  alert(error.data);
+  alert('Error:' +  error.data);
   dump('WebSocket Error ' + error.data);
   
 };
