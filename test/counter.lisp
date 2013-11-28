@@ -38,7 +38,6 @@
 (defparameter *counters-app*
   (make-instance 'xul-application
 		 :name "counters"
-		 :javascripts (list (asdf::system-relative-pathname :cl-xul #p"test/test-app.js"))
 		 :root-component (make-instance 'counters)
 		 :build-id "0001"
 		 :id "CountersApplication"))

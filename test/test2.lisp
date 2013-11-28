@@ -28,7 +28,7 @@
 			 (<:vbox
 			   (<:box (<:label (<:value= "hello")))
 			   (<:box (<:button (<:label= "Hello")
-					    (on-command=* (break "Hello!!")))
+					    (<:on-command= "alert('Hello!!');"))
 				  (<:button (<:label= "Connection")
 					    (<:on-command= "alert(connection.readyState);"))))
 			       ))

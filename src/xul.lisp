@@ -99,7 +99,12 @@
 
 (defmethod initialize-instance :after ((app xul-application) &rest initargs)
   (declare (ignore initargs))
-  (register-application app))
+  (register-application app)
+  
+  ;; Add xul.js to the list of javascript files
+  (push (asdf::system-relative-pathname :cl-xul #p"src/xul.js")
+	(javascripts app))
+  )
 
 (defmethod print-object ((app xul-application) stream)
   (print-unreadable-object (app stream :type t :identity t)
