@@ -180,10 +180,30 @@
      ,@body))
 
 (defmacro define-component (name super-classes slots &rest options)
-  `(defclass ,name ,super-classes
-     ,slots
-     (:metaclass component-class)
-     ,@options))
+  (let (class-options component-options)
+    (loop for option in options
+	 do
+	 (cond
+	   ((member (first option) (list :render :initialize))
+	    (push option component-options))
+	   (t (push option class-options))))
+    `(progn
+       (defclass ,name ,super-classes
+	 ,slots
+	 (:metaclass component-class)
+	 ,@class-options)
+       ,@(loop for option in component-options
+	      collect
+	      (case (first option)
+		(:render (destructuring-bind (render (comp) &body body) option
+			   (declare (ignore render))
+			   `(defmethod render ((,comp ,name))
+			      ,@body)))
+		(:initialize (destructuring-bind (initialize (comp &optional initargs) &body body) option
+			       (declare (ignore initialize))
+			       `(defmethod initialize-instance :after ((,comp ,name) &rest ,(or initargs 'initargs))
+					   (declare (ignorable ,(or initargs 'initargs)))
+					   ,@body))))))))
 
 (defgeneric render (component))
 

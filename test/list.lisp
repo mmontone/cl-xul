@@ -10,32 +10,31 @@
 	  :make-component-dirty-p nil)
    (selected-item :initarg :selected-item
 		  :initform nil
-		  :accessor selected-item)))
-
-(defmethod render ((comp list-test))
-  (<:vbox
-    (<:list-box
-      (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
-	(setf (selected-item comp) (nth index (items comp))))
-      (loop for item in (items comp)
-	 do
-	   (<:list-item (<:label= item))))
-    (<:button (<:label= "Remove")
-	      (on-command=*
-		(when (selected-item comp)
-		  (setf (items comp)
-			(remove (selected-item comp)
-				(items comp))))))
-    (<:text-box
-      (on-change=
-       (lambda (value)
-	 ;(break "Setting value: ~A" value)
-	 (setf (value comp) value))))
-    (<:button (<:label= "Add")
-	      (on-command=*
-		;(break "Add text: ~A" (value comp))
-		(when (value comp)
-		  (push (value comp) (items comp)))))))
+		  :accessor selected-item))
+  (:render (comp)
+	   (<:vbox
+	     (<:list-box
+	       (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
+		 (setf (selected-item comp) (nth index (items comp))))
+	       (loop for item in (items comp)
+		  do
+		    (<:list-item (<:label= item))))
+	     (<:button (<:label= "Remove")
+		       (on-command=*
+			 (when (selected-item comp)
+			   (setf (items comp)
+				 (remove (selected-item comp)
+					 (items comp))))))
+	     (<:text-box
+	       (on-change=
+		(lambda (value)
+					;(break "Setting value: ~A" value)
+		  (setf (value comp) value))))
+	     (<:button (<:label= "Add")
+		       (on-command=*
+					;(break "Add text: ~A" (value comp))
+			 (when (value comp)
+			   (push (value comp) (items comp))))))))
 
 (defparameter *list-test-app*
   (make-instance 'xul-application
