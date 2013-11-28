@@ -28,11 +28,11 @@
 	    (on-command=* (decrement-counter counter))))
 
 (defun increment-counter (counter)
-  (break "Incrementing counter: ~A" counter)
+  ;(break "Incrementing counter: ~A" counter)
   (incf (counter counter)))
 
 (defun decrement-counter (counter)
-  (break "Decrementing counter: ~A" counter)
+  ;(break "Decrementing counter: ~A" counter)
   (decf (counter counter)))
 
 (defparameter *counters-app*

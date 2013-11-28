@@ -1,5 +1,27 @@
 (in-package :xul)
 
+(defparameter *current-element* nil)
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defmacro with-xul (&body body)
+    `(call-with-xul (lambda () ,@body)))
+
+  (defmacro xul (xul)
+    `(make-xul ',xul)))
+
+(defun make-xul (xul)
+  (destructuring-bind (xul-element attributes &rest children) xul
+    (if children
+	(apply #'make-instance xul-element (cons :children
+						 (cons (mapcar #'make-xul children)
+						       attributes)))
+	(apply #'make-instance xul-element attributes))))
+
+
+(defun call-with-xul (function)
+  (let ((*current-element* t))
+    (funcall function)))
+
 (defclass xul-sink (cxml::sink)
   ())
 
@@ -74,6 +96,10 @@
    (javascripts :initarg :javascripts
 		:initform nil
 		:accessor javascripts)))
+
+(defmethod initialize-instance :after ((app xul-application) &rest initargs)
+  (declare (ignore initargs))
+  (register-application app))
 
 (defmethod print-object ((app xul-application) stream)
   (print-unreadable-object (app stream :type t :identity t)
@@ -154,7 +180,11 @@
 				(<:width= "1000")
 				(<:height= "1000")
 				(render-component (root-component app))))))
-	   (serialize-xul xul)))
+	   (serialize-xul xul)
+	   
+	   ;; Mark the whole root component clean before going on
+	   (mark-clean (root-component app))
+	   ))
 	((app-xul app)
 	 (serialize-xul (app-xul app)))
 	(t (error "Either xul or root component is needed in application"))))
@@ -163,6 +193,18 @@
 (defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
 
 (defparameter *app* nil "Currently running application")
+
+(defparameter *apps* (make-hash-table :test #'equalp))
+
+(setf clws:*debug-on-server-errors* t) 
+(setf clws:*debug-on-resource-errors* t)
+
+(defun register-application (app)
+  (setf (gethash (name app) *apps*) app))
+
+(defun get-application-named (name)
+  (or (gethash name *apps*)
+      (error "Application named ~A not registered" name)))
 
 (defun run-app (app)
   (let ((*app* app))
@@ -191,6 +233,8 @@
     
       (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))))
 
+(defparameter *client* nil)
+
 (defclass echo-resource (clws:ws-resource)
   ((appl :initarg :app
 	 :initform (error "Provide the application")
@@ -210,41 +254,22 @@
   (format t "Client disconnected from resource ~A: ~A~%" resource client))  
 
 (defmethod clws:resource-received-text ((res echo-resource) client message)
-  (break "got frame ~s from client ~s" message client)
+  ;(break "got frame ~s from client ~s" message client)
   (format t "got frame ~s from client ~s" message client)
   ;(clws:write-to-client-text client message)
   (let ((object (ignore-errors (json:decode-json-from-string message))))
     ;(break "~A" object)
-    (if (not object)
-	(error "~A could'nt be parsed" message)
-	;else
-	(cond
-	  ((equalp (cdr (assoc :type object)) "callback")
-	   (handle-callback object))
-	  (t (break "Don't know how to handle ~A" object))))
-    t))
+    (let ((*client* client))
+      (if (not object)
+	  (error "~A could'nt be parsed" message)
+					;else
+	  (cond
+	    ((equalp (cdr (assoc :type object)) "callback")
+	     (handle-callback object))
+	    (t (break "Don't know how to handle ~A" object))))
+      t)))
 
 (defmethod clws:resource-received-binary((res echo-resource) client message)
   ;(break "got binary frame ~s from client ~s" (length message) client)
   (format t "got binary frame ~s from client ~s" (length message) client)
   (clws:write-to-client-binary client message))
-
-(defmacro xul (xul)
-  `(make-xul ',xul))
-
-(defun make-xul (xul)
-  (destructuring-bind (xul-element attributes &rest children) xul
-    (if children
-	(apply #'make-instance xul-element (cons :children
-						 (cons (mapcar #'make-xul children)
-						       attributes)))
-	(apply #'make-instance xul-element attributes))))
-
-(defparameter *current-element* nil)
-
-(defmacro with-xul (&body body)
-  `(call-with-xul (lambda () ,@body)))
-
-(defun call-with-xul (function)
-  (let ((*current-element* t))
-    (funcall function)))

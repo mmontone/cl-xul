@@ -1,7 +1,7 @@
 (in-package :xul)
 
 (defclass component ()
-  ((id :initform (gensym "COMPONENT-")
+  ((id :initform (gensym)
        :accessor id)
    (parent :initform nil
 	   :accessor parent)
@@ -99,16 +99,46 @@
     (setf (dirty-p object) t)))
 
 (defun update-xul (app)
-  (let ((root-component (root app)))
-    (let ((changes (update-xul-from-component root-component))))))
+  (let ((root-component (root-component app)))
+    (let ((changes (update-xul-from-component root-component)))
+      (loop for change in changes
+	 do (clws:write-to-client-text
+	     *client*
+	     (serialize-change change))))))			       
 
 (defun update-xul-from-component (component)
   (if (dirty-p component)
-      ;; Generate the change
+      ;; Generate the changes
       (replace-component component)
       ;; else, see if the childs changed
-      (loop for child in (children component)
-	 collect (update-xul-from-component child))))
+      (loop for child being the hash-values of (children component)
+	 appending (update-xul-from-component child))))
+
+(defun replace-component (component)
+  (mark-clean component)
+  (list
+   (make-instance 'replace-component-change
+		  :component component)))
+
+(defclass xul-change ()
+  ())
+
+(defclass replace-component-change (xul-change)
+  ((component :initarg :component
+	      :initform (error "Provide the component")
+	      :accessor component)))
+
+(defmethod serialize-change ((change replace-component-change))
+  (json:encode-json-plist-to-string
+   (list :type "replaceComponent"
+	 :id (id (component change))
+	 :content
+	 (with-output-to-string (s)
+	   (let ((sink (cxml:make-character-stream-sink s :omit-xml-declaration-p t)))
+	     (cxml:with-xml-output sink
+	       (serialize-xul
+		(with-xul
+		  (render-component (component change))))))))))
 
 (defun map-component (component function)
   (funcall function component)
@@ -121,7 +151,7 @@
 (defun mark-clean (component &optional (recursive-p t))
   (setf (dirty-p component) nil)
   (when recursive-p
-    (loop for child in (children component)
+    (loop for child being the hash-values of (children component)
 	 do (mark-clean child recursive-p))))
 
 (defun add-component (component slot child-component)
@@ -157,23 +187,31 @@
 	(error "Callback handler with id ~A not found" id))))
 
 (defun register-callback-handler (function)
-  (let ((id (symbol-name (gensym "CH-"))))
+  (let ((id (symbol-name (gensym))))
     (setf (gethash id *callback-handlers*)
 	  function)
     id))
 
 (defun handle-callback (callback)
-  (break "Handling callback: ~A" callback)
+  ;(break "Handling callback: ~A" callback)
   (let ((handler-id (cdr (assoc :id callback))))
     (let ((handler (get-callback-handler handler-id)))
       ;(break "~A" handler)
-      (funcall handler))))
+      (funcall handler)))
+
+  ;; Apply view updates after possible modifications
+  (let ((*app* (get-application-named (cdr (assoc :app callback)))))
+    (update-xul *app*)))
 
 (defun on-command= (function)
   (let ((handler-id
 	 (register-callback-handler function)))
-    (<:on-command= (format nil "sendMessage('{\"type\":\"callback\", \"id\":\"~A\"}');"
-			   handler-id))))
+    (let ((message (list :type "callback"
+			 :id handler-id
+			 :app (name *app*))))
+      (<:on-command=
+       (format nil "sendMessage('~A');"
+	       (json:encode-json-plist-to-string message))))))
 
 (defmacro on-command=* (&body body)
   `(on-command= (lambda () ,@body)))

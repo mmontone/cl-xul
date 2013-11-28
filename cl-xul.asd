@@ -37,7 +37,6 @@ OTHER DEALINGS IN THE SOFTWARE."
     ((:module src
 	      :components
 	      ((:file "package")
-	       (:file "xul")
 	       (:module controls :components
 			((:file "mop")
 			 (:file "control")
@@ -53,6 +52,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "picker")
 			 (:file "grid"))
 			:serial t)
+	       (:file "xul")
 	       (:file "component"))
 	      :serial t))
     :serial t

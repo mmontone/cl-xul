@@ -24,8 +24,14 @@ connection.onerror = function (error) {
 
 // Log messages from the server
 connection.onmessage = function (e) {
-  alert(e.data);
-  eval(e.data);
+  //alert(e.data);
+  var update = JSON.parse(e.data);
+  switch(update.type) {
+      case 'replaceComponent':
+         document.getElementById(update.id).innerHTML = update.content;
+         break;
+      default: alert('Invalid update ' + e.data);
+  }
   dump('Server: ' + e.data);
 };
 
@@ -35,6 +41,6 @@ connection.onclose = function (e) {
 };
 
 function sendMessage(message) {
-    alert ('Sending ' + message);
+    //alert ('Sending ' + message);
     connection.send(message);
 }
