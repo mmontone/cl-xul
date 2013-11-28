@@ -204,7 +204,7 @@
   (let ((handler-id (cdr (assoc :id callback))))
     (let ((handler (get-callback-handler handler-id)))
       ;(break "~A" handler)
-      (funcall handler)))
+      (funcall handler callback)))
 
   ;; Apply view updates after possible modifications
   (let ((*app* (get-application-named (cdr (assoc :app callback)))))
@@ -212,16 +212,57 @@
 
 (defun on-command= (function)
   (let ((handler-id
-	 (register-callback-handler function)))
-    (let ((message (list :type "callback"
+	 (register-callback-handler
+	  (lambda (callback)
+	    (declare (ignore callback))
+	    (funcall function)))))
+    (let ((callback (list :type "callback"
 			 :id handler-id
 			 :app (name *app*))))
       (<:on-command=
        (format nil "sendMessage('~A');"
-	       (json:encode-json-plist-to-string message))))))
+	       (json:encode-json-plist-to-string callback))))))
 
 (defmacro on-command=* (&body body)
   `(on-command= (lambda () ,@body)))
+
+(defun replace-all (string part replacement &key (test #'char=))
+  "Returns a new string in which all the occurences of the part 
+is replaced with replacement."
+  (with-output-to-string (out)
+    (loop with part-length = (length part)
+          for old-pos = 0 then (+ pos part-length)
+          for pos = (search part string
+                            :start2 old-pos
+                            :test test)
+          do (write-string string out
+                           :start old-pos
+                           :end (or pos (length string)))
+          when pos do (write-string replacement out)
+          while pos)))
+
+(defun on-change= (function)
+  (let ((handler-id
+	 (register-callback-handler
+	  (lambda (callback)
+	    (funcall function (cdr (assoc :value callback)))))))
+    (when (or (not (slot-boundp *current-element* 'id))
+	      (not (id *current-element*)))
+      (setf (id *current-element*)
+	    (symbol-name (gensym))))
+    (let ((callback (list :type "callback"
+			  :id handler-id
+			  :app (name *app*)
+			  :value (format nil "document.getElementById(\\\"~A\\\").value;"
+					 (id *current-element*)))))
+			  
+      (<:onchange= 
+       (format nil "sendMessage('~A');"
+	       (json:encode-json-plist-to-string callback))
+       ))))
+
+(defmacro on-change=* ((value) &body body)
+  `(on-change= (lambda (,value) ,@body)))
 
 (defgeneric render-component (component))
 

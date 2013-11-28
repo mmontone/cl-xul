@@ -40,5 +40,11 @@ connection.onclose = function (e) {
 
 function sendMessage(message) {
     //alert ('Sending ' + message);
-    connection.send(message);
+    msg = JSON.parse(message);
+    //alert(msg.value);
+    if(msg.value) {
+	//alert('Evaluating: ' + msg.value);
+	msg.value = eval(msg.value);
+    }
+    connection.send(JSON.stringify(msg));
 }
