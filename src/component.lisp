@@ -164,6 +164,13 @@
   (remhash slot (children component))
   (mark-dirty component))
 
+(defmethod remove-component (component (child-component component))
+  (loop for child being the hash-values of (children component)
+       using (hash-key slot)
+       when (eql child child-component)
+       do (return (remhash slot (children component))))
+  (mark-dirty component))
+
 (defun get-component (component slot)
   (gethash slot (children component)))
 
