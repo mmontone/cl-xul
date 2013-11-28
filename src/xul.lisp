@@ -64,9 +64,13 @@
 		      :type string
 		      :documentation "Specify the maximum XULRunner version needed by this application. OPTIONAL - default value is any XULRunner less than XULRunner 2")
    (xul :initarg :xul
-	:initform (error "Provide the xul")
+	:initform nil
 	:accessor app-xul
 	:type xul-element)
+   (root-component :initarg :root-component
+		   :initform nil
+		   :accessor root-component
+		   :type component)
    (javascripts :initarg :javascripts
 		:initform nil
 		:accessor javascripts)))
@@ -143,8 +147,18 @@
 (defun generate-xul (app stream)
   (let ((output (make-xul-character-stream-sink stream)))
     (cxml:with-xml-output output
-      (serialize-xul (app-xul app))))
-  stream)
+      (cond
+	((root-component app)
+	 (let ((xul (with-xul
+		      (<:window (<:title= (name app))
+				(<:width= "1000")
+				(<:height= "1000")
+				(render-component (root-component app))))))
+	   (serialize-xul xul)))
+	((app-xul app)
+	 (serialize-xul (app-xul app)))
+	(t (error "Either xul or root component is needed in application"))))
+    stream))
 
 (defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
 

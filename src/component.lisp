@@ -44,7 +44,9 @@
 (defmethod closer-mop:compute-effective-slot-definition ((class component-class) name direct-slots)
    (let ((effective-slot (call-next-method)))
      (setf (make-component-dirty-p effective-slot)
-           (some #'make-component-dirty-p direct-slots))
+           (some (lambda (slot)
+		   (and (typep slot 'component-slot)
+			(make-component-dirty-p slot))) direct-slots))
      effective-slot))
 
 (defmethod initialize-instance :around
@@ -175,7 +177,9 @@
 
 (defmacro on-command=* (&body body)
   `(on-command= (lambda () ,@body)))
-						   
-(defmethod render ((component component))
-  (render-component component))
-  
+
+(defgeneric render-component (component))
+
+(defmethod render-component :around ((component component))
+  (<:box (<:id= (id component))
+	 (call-next-method)))
