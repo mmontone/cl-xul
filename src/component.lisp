@@ -264,6 +264,29 @@ is replaced with replacement."
 (defmacro on-change=* ((value) &body body)
   `(on-change= (lambda (,value) ,@body)))
 
+(defun on-select= (function)
+  (let ((handler-id
+	 (register-callback-handler
+	  (lambda (callback)
+	    (funcall function (cdr (assoc :value callback)))))))
+    (when (or (not (slot-boundp *current-element* 'id))
+	      (not (id *current-element*)))
+      (setf (id *current-element*)
+	    (symbol-name (gensym))))
+    (let ((callback (list :type "callback"
+			  :id handler-id
+			  :app (name *app*)
+			  :value (format nil "document.getElementById(\\\"~A\\\").selectedIndex;"
+					 (id *current-element*)))))
+			  
+      (<:onselect=
+       (format nil "sendMessage('~A');"
+	       (json:encode-json-plist-to-string callback))
+       ))))
+
+(defmacro on-select=* ((value) &body body)
+  `(on-select= (lambda (,value) ,@body)))
+
 (defgeneric render-component (component))
 
 (defmethod render-component :around ((component component))
