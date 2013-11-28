@@ -8,11 +8,11 @@
   (add-component counters 'counter-1 (make-instance 'counter :counter 0))
   (add-component counters 'counter-2 (make-instance 'counter :counter 3)))
 
-(defmethod render-component ((counters counters))
+(defmethod render ((counters counters))
   (with-child-components (counter-1 counter-2) counters
     (<:vbox
-      (render-component counter-1)
-      (render-component counter-2))))
+      (render counter-1)
+      (render counter-2))))
 
 (define-component counter ()
   ((counter :accessor counter
@@ -20,7 +20,7 @@
 	    :initform 0
 	    :initarg :counter)))
 
-(defmethod render-component ((counter counter))
+(defmethod render ((counter counter))
   (<:label (<:value= (counter counter)))
   (<:button (<:label= "Increment")
 	    (on-command=* (increment-counter counter)))

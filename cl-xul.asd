@@ -52,7 +52,9 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "picker")
 			 (:file "grid"))
 			:serial t)
+	       (:file "util")
 	       (:file "xul")
+	       (:file "events")
 	       (:file "component"))
 	      :serial t))
     :serial t

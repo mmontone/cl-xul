@@ -184,7 +184,7 @@
 		      (<:window (<:title= (name app))
 				(<:width= "1000")
 				(<:height= "1000")
-				(render-component (root-component app))))))
+				(render (root-component app))))))
 	   (serialize-xul xul)
 	   
 	   ;; Mark the whole root component clean before going on

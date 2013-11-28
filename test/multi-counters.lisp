@@ -7,11 +7,11 @@
   (declare (ignore initargs))
   (add-component comp (gensym) (make-instance 'counter :counter 0)))
 
-(defmethod render-component ((comp multi-counters))
+(defmethod render ((comp multi-counters))
   (<:vbox
     (<:vbox
       (maphash (lambda (slot counter)
-		 (render-component counter)
+		 (render counter)
 		 (<:button (<:label= "Remove")
 			   (on-command=* (remove-component comp counter))))
 	       (children comp)))
@@ -25,7 +25,7 @@
 	    :initform 0
 	    :initarg :counter)))
 
-(defmethod render-component ((counter counter))
+(defmethod render ((counter counter))
   (<:label (<:value= (counter counter)))
   (<:button (<:label= "Increment")
 	    (on-command=* (increment-counter counter)))

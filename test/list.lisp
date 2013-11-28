@@ -12,7 +12,7 @@
 		  :initform nil
 		  :accessor selected-item)))
 
-(defmethod render-component ((comp list-test))
+(defmethod render ((comp list-test))
   (<:vbox
     (<:list-box
       (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
