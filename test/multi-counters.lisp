@@ -9,16 +9,15 @@
 
 (defmethod render-component ((comp multi-counters))
   (<:vbox
-    (loop for counter being the hash-values of (children comp)
-	 using (hash-key slot)
-       do
-	 (progn
-	   (render-component counter)
-	   (<:button (<:label= "Remove")
-		     (on-command=* (remove-component comp slot))))))
-  (<:button (<:label= "Add")
-	    (on-command=* (add-component comp (gensym)
-					 (make-instance 'counter :counter 0)))))
+    (<:vbox
+      (maphash (lambda (slot counter)
+		 (render-component counter)
+		 (<:button (<:label= "Remove")
+			   (on-command=* (remove-component comp counter))))
+	       (children comp)))
+    (<:button (<:label= "Add")
+	      (on-command=* (add-component comp (gensym)
+					   (make-instance 'counter :counter 0))))))
 
 (define-component counter ()
   ((counter :accessor counter
