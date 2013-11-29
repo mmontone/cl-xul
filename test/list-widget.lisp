@@ -32,7 +32,7 @@
 
 (defparameter *list-widget-test-app*
   (make-instance 'xul-application
-		 :name "listtest"
+		 :name "listwidgettest"
 		 :root-component (make-instance 'list-widget-test)
 		 :build-id "0001"
 		 :id "ListWidgetTest"))

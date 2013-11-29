@@ -13,4 +13,5 @@
 	   (<:button
 	     (<:label= (label button))
 	     (when (on-command button)
-	       (xul::on-command=* (on-command button))))))
+	       (xul::on-command=*
+		 (funcall (on-command button)))))))

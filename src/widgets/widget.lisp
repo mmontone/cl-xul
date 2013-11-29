@@ -17,10 +17,11 @@
 	    (push option widget-options))
 	   (t (push option class-options))))
     (flet ((event-slot (event)
-	     (destructuring-bind (event &key initarg accessor documentation &allow-other-keys)
+	     (destructuring-bind (event &key initarg initform accessor documentation &allow-other-keys)
 		 event
 	       (list event
-		     :initarg (or initarg event)
+		     :initarg (or initarg (intern (string-upcase (symbol-name event)) :keyword))
+		     :initform (or initform nil)
 		     :accessor (or accessor event)
 		     :documentation documentation))))		     
       (let* ((events (cdr (assoc :events widget-options)))
