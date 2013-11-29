@@ -18,7 +18,16 @@
 			    (remove (selected-item comp)
 				    (items comp))))))
 	     (<:vbox
+	       (<:tooltip (<:id= "list-tip")
+			  (<:orient= "vertical")
+			  (<:noautohide= t)
+			  (<:style= "background-color: #33DD00;")
+			  (<:label (<:value="Click here to see more information"))
+			  (<:label (<:value="Really!")
+				   (<:style="color: red;")))
+			  
 	       (<:list-box
+		 (<:tooltip= "list-tip")
 		 (<:context= "list-menu")
 		 (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
 		   (setf (selected-item comp) (nth index (items comp))))
@@ -32,13 +41,16 @@
 			       (<:label= "Remove")
 			       (on-command=* (remove-list-item))))	     
 	       (<:button (<:label= "Remove")
+			 (<:tooltip-text= "Remove the selected item from the list")
 			 (on-command=* (remove-list-item)))
 	       (<:text-box
+		 (<:tooltip-text= "Enter the item to add to the list")
 		 (on-change=
 		  (lambda (value)
 					;(break "Setting value: ~A" value)
 		    (setf (value comp) value))))
 	       (<:button (<:label= "Add")
+			 (<:tooltip-text= "Add and item to the list")
 			 (on-command=*
 					;(break "Add text: ~A" (value comp))
 			   (when (value comp)

@@ -49,6 +49,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "list")
 			 (:file "panel")
 			 (:file "toolbar")
+			 (:file "tooltip")
 			 (:file "picker")
 			 (:file "tabs")
 			 (:file "grid"))
