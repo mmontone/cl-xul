@@ -12,31 +12,37 @@
 		  :initform nil
 		  :accessor selected-item))
   (:render (comp)
-	   (<:vbox
-	     (<:list-box
-	       (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
-		 (setf (selected-item comp) (nth index (items comp))))
-	       (loop for item in (items comp)
-		  do
-		    (<:list-item (<:label= item)
-				 (when (eql item (selected-item comp))
-				   (<:selected= t)))))
-	     (<:button (<:label= "Remove")
-		       (on-command=*
-			 (when (selected-item comp)
-			   (setf (items comp)
-				 (remove (selected-item comp)
-					 (items comp))))))
-	     (<:text-box
-	       (on-change=
-		(lambda (value)
+	   (flet ((remove-list-item ()
+		    (when (selected-item comp)
+		      (setf (items comp)
+			    (remove (selected-item comp)
+				    (items comp))))))
+	     (<:vbox
+	       (<:list-box
+		 (<:context= "list-menu")
+		 (on-select=* (index) ;(break "List item:~A" (nth index (items comp)))
+		   (setf (selected-item comp) (nth index (items comp))))
+		 (loop for item in (items comp)
+		    do
+		      (<:list-item (<:label= item)
+				   (when (eql item (selected-item comp))
+				     (<:selected= t)))))
+	       (<:menu-popup (<:id= "list-menu")
+			     (<:menu-item
+			       (<:label= "Remove")
+			       (on-command=* (remove-list-item))))	     
+	       (<:button (<:label= "Remove")
+			 (on-command=* (remove-list-item)))
+	       (<:text-box
+		 (on-change=
+		  (lambda (value)
 					;(break "Setting value: ~A" value)
-		  (setf (value comp) value))))
-	     (<:button (<:label= "Add")
-		       (on-command=*
+		    (setf (value comp) value))))
+	       (<:button (<:label= "Add")
+			 (on-command=*
 					;(break "Add text: ~A" (value comp))
-			 (when (value comp)
-			   (push (value comp) (items comp))))))))
+			   (when (value comp)
+			     (push (value comp) (items comp)))))))))
 
 (defparameter *list-test-app*
   (make-instance 'xul-application
