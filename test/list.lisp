@@ -18,7 +18,9 @@
 		 (setf (selected-item comp) (nth index (items comp))))
 	       (loop for item in (items comp)
 		  do
-		    (<:list-item (<:label= item))))
+		    (<:list-item (<:label= item)
+				 (when (eql item (selected-item comp))
+				   (<:selected= t)))))
 	     (<:button (<:label= "Remove")
 		       (on-command=*
 			 (when (selected-item comp)
