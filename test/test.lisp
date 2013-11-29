@@ -91,8 +91,7 @@
 						    (list-item ()
 							       (list-cell (:label "Roger"))
 							       (list-cell (:label "Swashbuckler"))))
-					   
-					   ))))
+					   )))
 		 :build-id "0001"
 		 :id "TestApplication"))
 

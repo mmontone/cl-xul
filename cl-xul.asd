@@ -50,6 +50,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "panel")
 			 (:file "toolbar")
 			 (:file "picker")
+			 (:file "tabs")
 			 (:file "grid"))
 			:serial t)
 	       (:file "util")
