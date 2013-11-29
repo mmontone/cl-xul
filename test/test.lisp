@@ -20,9 +20,8 @@
 					       (menu-popup (:id "edit-popup")
 							   (menu-item (:label "Undo"))
 							   (menu-item (:label "Redo")))))
-			       (hbox ()
-				     (vbox ()
-					   (label (:control "hello-label"
+			       (vbox (:style "overflow:auto" :height "500")
+				     (label (:control "hello-label"
 							    :accesskey "h"
 							    :value "Hello"))
 					   (label (:control "bye-label"
@@ -57,8 +56,8 @@
 											(menu-item (:label "Accounts"))
 											(menu-item (:label "Sales" :selected t))
 											(menu-item (:label "Support"))))))))
-					   (description (:value "This is a long section of text that will word wrap when displayed.")))
-				     (vbox ()
+					   (description (:value "This is a long section of text that will word wrap when displayed."))
+				     
 					   (text-box (:id "your-name" :value "John"))
 					   (deck (:selected-index "1")
 						 (description (:value "This is the first page"))
