@@ -55,7 +55,12 @@ OTHER DEALINGS IN THE SOFTWARE."
 	       (:file "util")
 	       (:file "xul")
 	       (:file "events")
-	       (:file "component"))
+	       (:file "component")
+	       (:module widgets :components
+			((:file "widget")
+			 (:file "button")
+			 (:file "text-box")
+			 (:file "list-box"))))
 	      :serial t))
     :serial t
     :depends-on
