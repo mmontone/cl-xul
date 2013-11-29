@@ -8,6 +8,7 @@
 	       (add-component comp 'list list)
 	       (add-component comp 'remove
 			      (w::button :label "Remove"
+					 :on-command* (ps:ps (alert "Removing the element"))
 					 :on-command
 					 (lambda ()
 					   (when (w::selected-item list)
@@ -17,6 +18,7 @@
 	       (add-component comp 'input input)
 	       (add-component comp 'add
 			      (w::button :label "Add"
+					 :on-command* (ps:ps (alert "Adding the element"))
 					 :on-command
 					 (lambda ()
 					   (when (w::value input)

@@ -19,14 +19,23 @@
     (flet ((event-slot (event)
 	     (destructuring-bind (event &key initarg initform accessor documentation &allow-other-keys)
 		 event
-	       (list event
-		     :initarg (or initarg (intern (string-upcase (symbol-name event)) :keyword))
-		     :initform (or initform nil)
-		     :accessor (or accessor event)
-		     :documentation documentation))))		     
+	       (list
+		;; Callback event
+		(list event
+		      :initarg (or initarg (intern (string-upcase (symbol-name event)) :keyword))
+		      :initform (or initform nil)
+		      :accessor (or accessor event)
+		      :documentation documentation)
+		;; Client event
+		(let ((client-event (intern (format nil "~A*" event))))
+		  (list client-event
+		      :initarg (intern (string-upcase (symbol-name client-event)) :keyword)
+		      :initform nil
+		      :accessor client-event
+		      :documentation (format nil "Client event: ~A" documentation)))))))
       (let* ((events (cdr (assoc :events widget-options)))
 	     (slots (append slots
-			    (mapcar #'event-slot events))))
+			    (apply #'append (mapcar #'event-slot events)))))
 	`(progn
 	   (defclass ,name (widget ,@super-classes)
 	     ,slots
