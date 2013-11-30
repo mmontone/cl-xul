@@ -13,35 +13,49 @@
 	       (add-component showcase 'child
 			      (make-instance (getf (cdr (selected-page showcase)) :component))))
   (:render (showcase)
-	   (<:list-box
-	     (<:style= "width:10em")
-	     (on-select= (lambda (index)
-			   (setf (selected-page showcase)
-				 (nth index *showcase-pages*))
-			   (add-component showcase 'child
-					  (make-instance (getf (cdr (selected-page showcase)) :component)))))
-	     (loop for page in *showcase-pages*
-		do
-		  (<:list-item (<:label (car page))
-			       (when (equalp (selected-page showcase)
-					     page)
-				 (<:selected= t)))))
-	   (<:splitter (<:collapse= :before)
-		       (<:grippy))
-	   (<:tab-box (<:flex= 1)
-		      (<:tabs
-			(<:tab (<:label= "Examples"))
-			(<:tab (<:label= "Source")))
-		      (<:tab-panels
-			(<:tab-panel (<:height= 800)
-				     (<:width= 600)
-			  (<:vbox (<:flex= 1)
-				  (<:style= "overflow:auto")
-				  (render (get-component showcase 'child))))
-			(<:tab-panel (<:style= "overflow:auto;")
-			  (<:description (<:style= "white-space: pre-wrap;")
-					 (let ((source (getf (cdr (selected-page showcase)) :source)))
-					   (file-string source))))))))
+	   (<:vbox (<:flex= 1)
+		   (<:toolbox
+		     (<:menu-bar
+		       (<:menu (<:label= "File")
+			       (<:accesskey= "f")
+			       (<:menu-popup
+				 (<:menu-item (<:label= "Quit")
+					      (<:on-command= "window.close();"))))
+		       (<:menu (<:label= "Help")
+			       (<:accesskey= "h")
+			       (<:menu-popup
+				 (<:menu-item (<:label= "About")
+					      (<:on-command= "alert('CL-XUL Common Lisp XUL bindings');"))))))
+		   (<:hbox (<:flex= 1)
+			   (<:list-box
+			     (<:style= "width:10em")
+			     (on-select= (lambda (index)
+					   (setf (selected-page showcase)
+						 (nth index *showcase-pages*))
+					   (add-component showcase 'child
+							  (make-instance (getf (cdr (selected-page showcase)) :component)))))
+			     (loop for page in *showcase-pages*
+				do
+				  (<:list-item (<:label (car page))
+					       (when (equalp (selected-page showcase)
+							     page)
+						 (<:selected= t)))))
+			   (<:splitter (<:collapse= :before)
+				       (<:grippy))
+			   (<:tab-box (<:flex= 1)
+				      (<:tabs
+					(<:tab (<:label= "Examples"))
+					(<:tab (<:label= "Source")))
+				      (<:tab-panels
+					(<:tab-panel (<:height= 800)
+						     (<:width= 600)
+						     (<:vbox (<:flex= 1)
+							     (<:style= "overflow:auto")
+							     (render (get-component showcase 'child))))
+					(<:tab-panel (<:style= "overflow:auto;")
+						     (<:description (<:style= "white-space: pre-wrap;")
+								    (let ((source (getf (cdr (selected-page showcase)) :source)))
+								      (file-string source))))))))))
 
 (defparameter *showcase-pages*
   (flet ((source (filename)
