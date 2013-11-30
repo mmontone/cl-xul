@@ -150,7 +150,7 @@
 	 (let ((filename (make-pathname :name (pathname-name javascript)
 					:type (pathname-type javascript))))
 	   (cl-fad:copy-file javascript (merge-pathnames filename content-path) :overwrite t)))))
-
+    
 (defun generate-initialization (app stream)
   (format stream "[App]~%")
   (format stream "Vendor=~a~%" (vendor app))
@@ -211,9 +211,33 @@
   (or (gethash name *apps*)
       (error "Application named ~A not registered" name)))
 
+(defun files-folder (app)
+  (let ((app-folder (app-folder app)))
+    (merge-pathnames "chrome/content/files/" app-folder)))
+
+(defun file (pathname)
+  (when (not (probe-file pathname))
+    (error "~A not found" pathname))
+  ;; Deploy the file rightaway
+  (let ((filename (cl-base64:usb8-array-to-base64-string
+		   (md5:md5sum-file pathname))))
+    (let ((target-filepath (make-pathname :name filename
+					  :defaults (files-folder *app*))))
+      (when (not (probe-file target-filepath))
+	(ensure-directories-exist (files-folder *app*))
+	(cl-fad:copy-file pathname target-filepath :overwrite t))
+      (format nil "files/~A" filename))))
+
+(defun src= (pathname)
+  (<:src=
+   (file pathname)))
+
+(defmethod app-folder ((app xul-application))
+  (pathname (format nil "/tmp/~A/" (name app))))
+
 (defun run-app (app)
   (let ((*app* app))
-    (let ((app-folder (pathname (format nil "/tmp/~A/" (name app)))))
+    (let ((app-folder (app-folder app)))
       (make-app-folder app app-folder)
 
       (clws:register-global-resource

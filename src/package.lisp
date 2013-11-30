@@ -15,7 +15,9 @@
 	   #:on-change=
 	   #:on-change=*
 	   #:on-select=
-	   #:on-select=*))
+	   #:on-select=*
+	   #:file
+	   #:src=))
 
 (defpackage xul-builder
   (:nicknames :<)
