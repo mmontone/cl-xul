@@ -76,4 +76,5 @@ OTHER DEALINGS IN THE SOFTWARE."
      :cxml
      :closer-mop
      :clws
-     :cl-json))
+     :cl-json
+     :md5))
