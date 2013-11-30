@@ -96,7 +96,7 @@
      slot-definition)
   (call-next-method)
   (when (make-component-dirty-p slot-definition)
-    (setf (dirty-p object) t)))
+    (mark-dirty object)))
 
 (defun update-xul (app)
   (let ((root-component (root-component app)))
