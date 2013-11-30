@@ -25,7 +25,7 @@
 			       (<:accesskey= "h")
 			       (<:menu-popup
 				 (<:menu-item (<:label= "About")
-					      (<:on-command= "alert('CL-XUL Common Lisp XUL bindings');"))))))
+					      (on-command=* (show-help-about showcase)))))))
 		   (<:hbox (<:flex= 1)
 			   (<:list-box
 			     (<:style= "width:10em")
@@ -56,6 +56,26 @@
 						     (<:description (<:style= "white-space: pre-wrap;")
 								    (let ((source (getf (cdr (selected-page showcase)) :source)))
 								      (file-string source))))))))))
+
+(define-component about-cl-xul-component ()
+  ()
+  (:render (comp)
+	   (<:hbox
+	     (<:image (src= (asdf:system-relative-pathname
+			     :cl-xul-test
+			     "test/showcase/images/lisplogo_warning2_256.png")))
+	     (<:div
+	       (<:h1 "CL-XUL")
+	       (<:p "Library for Mozilla XUL GUI programming in Common Lisp")
+	       (<:p "Project homepage: ")
+	       (<:a (<:href= "https://github.com/mmontone/cl-xul")
+		    ;(<:target= "_blank")
+		    "https://github.com/mmontone/cl-xul")
+	       (<:p "Author: Mariano Montone")))))
+
+(defun show-help-about (showcase)
+  (add-component showcase 'child
+		 (make-instance 'about-cl-xul-component)))		 
 
 (defparameter *showcase-pages*
   (flet ((source (filename)
