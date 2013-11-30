@@ -45,8 +45,9 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "radiobuttons")
 			 (:file "lists")
 			 (:file "components"))
-			:serial t))
-	       :serial t))
+			:serial t)
+	      (:file "info"))
+	      :serial t))
     :serial t
     :depends-on
     (:cl-xul
