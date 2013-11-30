@@ -6,7 +6,8 @@
    (access-state :initform "(no input yet)"
 		 :accessor access-state)
    (state-state :initform "(no input yet)"
-		:accessor state-state))
+		:accessor state-state
+		:make-component-dirty-p nil))
   (:render (comp)
 	   (<:vbox (<:flex= 1)
 		   (<:style= "overflow: auto")
