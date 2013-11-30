@@ -9,13 +9,17 @@
 (define-component showcase ()
   ((selected-page :accessor selected-page
 		  :initform (first *showcase-pages*)))
-  (:initialize (showcase))
+  (:initialize (showcase)
+	       (add-component showcase 'child
+			      (make-instance (getf (cdr (selected-page showcase)) :component))))
   (:render (showcase)
 	   (<:list-box
 	     (<:style= "width:10em")
 	     (on-select= (lambda (index)
 			   (setf (selected-page showcase)
-				 (nth index *showcase-pages*))))
+				 (nth index *showcase-pages*))
+			   (add-component showcase 'child
+					  (make-instance (getf (cdr (selected-page showcase)) :component)))))
 	     (loop for page in (pages showcase)
 		do
 		  (<:list-item (<:label (car page))
@@ -29,11 +33,12 @@
 			(<:tab (<:label= "Examples"))
 			(<:tab (<:label= "Source")))
 		      (<:tab-panels
-			(<:tab-panel
+			(<:tab-panel (<:height= 800)
+				     (<:width= 600)
 			  (<:vbox (<:flex= 1)
-				  (let ((component (make-instance (getf (cdr (selected-page showcase)) :component))))
-				    (render component))))
-			(<:tab-panel
+				  (<:style= "overflow:auto")
+				  (render (get-component showcase 'child))))
+			(<:tab-panel (<:style= "overflow:auto;")
 			  (<:description (<:style= "white-space: pre-wrap;")
 					 (let ((source (getf (cdr (selected-page showcase)) :source)))
 					   (file-string source))))))))
