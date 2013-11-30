@@ -9,6 +9,7 @@
 (defmethod serialize-xul ((window window))
   (cxml:with-element "window"
     (cxml:attribute "xmlns" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")
+    (cxml:attribute "xmlns:html" "http://www.w3.org/1999/xhtml")
     (loop for attribute in (attributes (class-of window))
 	 when (slot-boundp window (closer-mop:slot-definition-name attribute))
 	 do

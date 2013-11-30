@@ -74,6 +74,12 @@
 (define-xul-element xul-control (xul-element)
   ())
 
+(defmethod element-name ((xul-element xul-element))
+  (string-downcase
+   (remove #\-
+	   (symbol-name
+	    (class-name (class-of xul-element))))))
+
 (defgeneric serialize-xul (xul-element))
 
 (defmethod serialize-xul ((xul-element xul-element))
@@ -85,7 +91,7 @@
 	       xul-element))
       
   ;; Generic serialization
-  (let ((element-name (string-downcase (remove #\- (symbol-name (class-name (class-of xul-element)))))))
+  (let ((element-name (element-name xul-element)))
     (cxml:with-element element-name
       (loop for attribute in (attributes (class-of xul-element))
 	 when (slot-boundp xul-element (closer-mop:slot-definition-name attribute))
