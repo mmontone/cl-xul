@@ -1,5 +1,21 @@
 (defpackage xul
-  (:use :cl :alexandria))
+  (:use :cl :alexandria)
+  (:export #:define-component
+	   #:render
+	   #:component
+	   #:get-component
+	   #:add-component
+	   #:remove-component
+	   #:children
+	   #:parent
+	   #:xul-application
+	   #:run-app
+	   #:on-command=
+	   #:on-command=*
+	   #:on-change=
+	   #:on-change=*
+	   #:on-select=
+	   #:on-select=*))
 
 (defpackage xul-builder
   (:nicknames :<)

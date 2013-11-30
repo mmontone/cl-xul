@@ -1,4 +1,4 @@
-(in-package :xul)
+(in-package :xul-test)
 
 (defparameter *test-app-2*
   (make-instance 'xul-application

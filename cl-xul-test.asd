@@ -1,12 +1,12 @@
 (require :asdf)
 
-(defpackage xul-system
+(defpackage xul-test-system
   (:use :cl :asdf))
 
-(in-package xul-system)
+(in-package xul-test-system)
 
-(defsystem cl-xul
-    :description "Mozilla XUL bindings"
+(defsystem cl-xul-test
+    :description "Common Lisp Mozilla XUL bindings tests"
     :version "0.1"
     :author "Mariano Montone <marianomontone@gmail.com>"
     :maintainer "Mariano Montone <marianomontone@gmail.com>"
@@ -34,46 +34,20 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE."
     :components
-    ((:module src
+    ((:module test
 	      :components
 	      ((:file "package")
-	       (:module controls :components
-			((:file "mop")
-			 (:file "control")
-			 (:file "window")
-			 (:file "box")
-			 (:file "label")
-			 (:file "button")
-			 (:file "text")
-			 (:file "menu")
-			 (:file "list")
-			 (:file "panel")
-			 (:file "toolbar")
-			 (:file "tooltip")
-			 (:file "picker")
-			 (:file "tabs")
-			 (:file "splitter")
-			 (:file "grid")
-			 (:file "browser"))
-			:serial t)
-	       (:file "util")
-	       (:file "xul")
-	       (:file "events")
-	       (:file "component")
-	       (:module widgets :components
-			((:file "widget")
-			 (:file "button")
-			 (:file "text-box")
-			 (:file "list-box"))))
-	      :serial t))
+	       (:module showcase
+			:components
+			((:file "showcase")
+			 (:file "buttons")
+			 (:file "checkboxes")
+			 (:file "radiobuttons")
+			 (:file "lists")
+			 (:file "components"))
+			:serial t))
+	       :serial t))
     :serial t
     :depends-on
-    (:alexandria
-     :hunchentoot
-     :log5
-     :cl-who
-     :parenscript
-     :cxml
-     :closer-mop
-     :clws
-     :cl-json))
+    (:cl-xul
+     :fiveam))

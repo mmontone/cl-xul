@@ -1,4 +1,4 @@
-(in-package :xul)
+(in-package :xul-test)
 
 (defun file-string (path)
   (with-open-file (stream path)

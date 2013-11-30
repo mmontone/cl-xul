@@ -1,4 +1,4 @@
-(in-package :xul)
+(in-package :xul-test)
 
 (define-component components-showcase ()
   ()

@@ -1,4 +1,4 @@
-(in-package :xul)
+(in-package :xul-test)
 
 (define-component checkboxes-showcase ()
   ((tab-state :initform "(no input yet)"
@@ -69,6 +69,8 @@
       (<:checkbox (<:flex= 1)
 		  (<:label= "Default")
 		  (<:default= t)
+		  (when (equalp (state-state comp) "Default")
+		    (<:checked= t))
 		  (on-command=* (setf (state-state comp) "Default")))
       (<:checkbox (<:flex= 1)
 		  (<:label= "Checked")
@@ -76,9 +78,13 @@
 		  (on-command=* (setf (state-state comp) "Checked")))
       (<:checkbox (<:flex= 1)
 		  (<:label= "Normal")
+		  (when (equalp (state-state comp) "Normal")
+		    (<:checked= t))
 		  (on-command=* (setf (state-state comp) "Normal")))
       (<:checkbox (<:flex= 1)
 		  (<:label= "Disabled")
+		  (when (equalp (state-state comp) "Disabled")
+		    (<:checked= t))
 		  (<:disabled= t)
 		  (on-command=* (setf (state-state comp) "Disabled"))))
     (<:hbox (<:pack= :center)

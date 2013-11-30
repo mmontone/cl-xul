@@ -1,4 +1,4 @@
-(in-package :xul)
+(in-package :xul-test)
 
 (define-component buttons-showcase ()
   ((current-state :initform "(no input yet)"
