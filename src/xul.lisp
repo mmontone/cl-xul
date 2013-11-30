@@ -219,8 +219,11 @@
   (when (not (probe-file pathname))
     (error "~A not found" pathname))
   ;; Deploy the file rightaway
-  (let ((filename (cl-base64:usb8-array-to-base64-string
-		   (md5:md5sum-file pathname))))
+  (let ((filename
+	 (replace-all 
+	  (cl-base64:usb8-array-to-base64-string
+	   (md5:md5sum-file pathname))
+	  "/" "_")))
     (let ((target-filepath (make-pathname :name filename
 					  :defaults (files-folder *app*))))
       (when (not (probe-file target-filepath))
