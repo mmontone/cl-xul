@@ -2,47 +2,53 @@
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defmacro define-xul-element
-    (name super-elements attributes &rest options)
-  `(progn
-
-     (defclass ,name ,super-elements
-       ,attributes
-       (:metaclass xul-class)
-       ,@options)
+      (name super-elements attributes &rest options)
+    `(progn
+       (defclass ,name ,super-elements
+	 ,attributes
+	 (:metaclass xul-class)
+	 ,@options)
      
-     (defmacro ,(intern (symbol-name name) :xul-builder)
-	 (&body body)
-       `(let ((element (make-instance ',',name)))
-         (when (null *current-element*)
-	   (error "Can't bind ~A to a null *current-element*. Make sure this is being called under a with-xul scope" element))
-	 (if (equalp *current-element* t)
-	     (progn
-	       (let ((*current-element* element))
-		 ,@body)
-	       element)
-	     (progn
-	       (setf (children *current-element*) (append (children *current-element*) (list element)))
-	       (let ((*current-element* element))
-		 ,@body)
-	       element))))
-     (export ',(intern (symbol-name name) :xul-builder) :xul-builder)
+       (defmacro ,(intern (symbol-name name) :xul-builder)
+	   (&body body)
+	 `(let ((element (make-instance ',',name)))
+	    (when (null *current-element*)
+	      (error "Can't bind ~A to a null *current-element*. Make sure this is being called under a with-xul scope" element))
+	    (if (equalp *current-element* t)
+		(let ((*current-element* element))
+		  (let ((content (progn ,@body)))
+		    (when (stringp content)
+		      (setf (content element) content))
+		    element))
+		(progn
+		  (setf (children *current-element*) (append (children *current-element*) (list element)))
+		  (let ((*current-element* element))
+		    (let ((content (progn ,@body)))
+		      (when (stringp content)
+			(setf (content element) content))
+		      element))
+		  ))))
+       
+       (export ',(intern (symbol-name name) :xul-builder) :xul-builder)
 
-     ,@(loop for attribute in attributes
-	  collect
-	    (let* ((attribute-name (if (symbolp attribute)
-				     attribute
-				     (first attribute)))
-		   (attribute-builder-name (intern (format nil "~A=" attribute-name) :xul-builder)))
-	      `(progn
-		 (defmacro ,attribute-builder-name (value)
-		   `(setf (,',attribute-name *current-element*) ,value))
-		 (export ',attribute-builder-name :xul-builder)))
-     
-     ))))
-
+       ,@(loop for attribute in attributes
+	    collect
+	      (let* ((attribute-name (if (symbolp attribute)
+					 attribute
+					 (first attribute)))
+		     (attribute-builder-name (intern (format nil "~A=" attribute-name) :xul-builder)))
+		`(progn
+		   (defmacro ,attribute-builder-name (value)
+		     `(setf (,',attribute-name *current-element*) ,value))
+		   (export ',attribute-builder-name :xul-builder)))
+	      ))))
   
+(defclass xml-element ()
+  ((content :initarg :content
+	    :accessor content
+	    :initform nil)))
 
-(define-xul-element xul-element ()
+(define-xul-element xul-element (xml-element)
   (align allow-events allow-negative-assertions
 	 (class* :attribute-name "class") coalesce-duplicate-arcs collapsed container containment context
 	 context-menu data-sources dir empty equal-size flags flex height hidden id
@@ -69,6 +75,13 @@
 (defgeneric serialize-xul (xul-element))
 
 (defmethod serialize-xul ((xul-element xul-element))
+  ;; Validation
+  (when (and (content xul-element)
+		 (and (typep xul-element 'container-element)
+		      (children xul-element)))
+	(error "Invalid xul element ~A. Cannot contain text and children at the same time"
+	       xul-element))
+      
   ;; Generic serialization
   (let ((element-name (string-downcase (remove #\- (symbol-name (class-name (class-of xul-element)))))))
     (cxml:with-element element-name
@@ -78,6 +91,8 @@
 	   (cxml:attribute (attribute-name attribute)
 			   (serialize-xml-value
 			    (slot-value xul-element (closer-mop:slot-definition-name attribute)))))
+      (when (content xul-element)
+	(cxml:text (content xul-element)))
       (when (typep xul-element 'container-element)
 	(loop for child in (children xul-element)
 	     do (serialize-xul child))))))
