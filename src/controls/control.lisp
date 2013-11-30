@@ -39,7 +39,9 @@
 		     (attribute-builder-name (intern (format nil "~A=" attribute-name) :xul-builder)))
 		`(progn
 		   (defmacro ,attribute-builder-name (value)
-		     `(setf (,',attribute-name *current-element*) ,value))
+		     `(progn
+			(setf (,',attribute-name *current-element*) ,value)
+			nil))
 		   (export ',attribute-builder-name :xul-builder)))
 	      ))))
   
