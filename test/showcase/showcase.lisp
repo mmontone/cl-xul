@@ -62,8 +62,8 @@
        :component components-showcase
        :source ,(source "components.lisp"))
       ("Embedded"
-       :component embedded-showcase
-       :source ,(source "embedded.lisp")))))
+       :component showcase
+       :source ,(source "showcase.lisp")))))
 
 (defun showcase ()
   (let ((app
