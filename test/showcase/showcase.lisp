@@ -55,6 +55,9 @@
       ("Radiobuttons"
        :component radiobuttons-showcase
        :source ,(source "radiobuttons.lisp"))
+      ("Images"
+       :component images-showcase
+       :source ,(source "images.lisp"))
       ("Lists"
        :component lists-showcase
        :source ,(source "lists.lisp"))
