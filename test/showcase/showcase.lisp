@@ -65,12 +65,11 @@
        :component embedded-showcase
        :source ,(source "embedded.lisp")))))
 
-(defparameter *showcase-app*
-  (make-instance 'xul-application
-		 :name "showcase"
-		 :root-component (make-instance 'showcase)
-		 :build-id "0001"
-		 :id "Showcase"))
-
 (defun showcase ()
-  (run-app *showcase-app*)) 
+  (let ((app
+	 (make-instance 'xul-application
+			:name "showcase"
+			:root-component (make-instance 'showcase)
+			:build-id "0001"
+			:id "Showcase")))
+    (run-app app))) 
