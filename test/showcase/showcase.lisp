@@ -58,6 +58,9 @@
       ("Lists"
        :component lists-showcase
        :source ,(source "lists.lisp"))
+      ("Components"
+       :component components-showcase
+       :source ,(source "components.lisp"))
       ("Embedded"
        :component embedded-showcase
        :source ,(source "embedded.lisp")))))
