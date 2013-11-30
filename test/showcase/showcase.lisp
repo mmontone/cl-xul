@@ -20,7 +20,7 @@
 				 (nth index *showcase-pages*))
 			   (add-component showcase 'child
 					  (make-instance (getf (cdr (selected-page showcase)) :component)))))
-	     (loop for page in (pages showcase)
+	     (loop for page in *showcase-pages*
 		do
 		  (<:list-item (<:label (car page))
 			       (when (equalp (selected-page showcase)
@@ -57,7 +57,10 @@
        :source ,(source "radiobuttons.lisp"))
       ("Lists"
        :component lists-showcase
-       :source ,(source "lists.lisp")))))
+       :source ,(source "lists.lisp"))
+      ("Embedded"
+       :component embedded-showcase
+       :source ,(source "embedded.lisp")))))
 
 (defparameter *showcase-app*
   (make-instance 'xul-application
