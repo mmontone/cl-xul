@@ -19,8 +19,8 @@
 	     (loop for page in (pages showcase)
 		do
 		  (<:list-item (<:label (car page))
-			       (when (eql (selected-page showcase)
-					  page)
+			       (when (equalp (selected-page showcase)
+					     page)
 				 (<:selected= t)))))
 	   (<:splitter (<:collapse= :before)
 		       (<:grippy))
@@ -34,8 +34,9 @@
 				  (let ((component (make-instance (getf (cdr (selected-page showcase)) :component))))
 				    (render component))))
 			(<:tab-panel
-			  (let ((source (getf (cdr (selected-page showcase)) :source)))
-			    (file-string source)))))))
+			  (<:description (<:style= "white-space: pre-wrap;")
+					 (let ((source (getf (cdr (selected-page showcase)) :source)))
+					   (file-string source))))))))
 
 (defparameter *showcase-pages*
   (flet ((source (filename)
@@ -58,7 +59,7 @@
 		 :name "showcase"
 		 :root-component (make-instance 'showcase)
 		 :build-id "0001"
-		 :id "Showcase"))		 
-  
+		 :id "Showcase"))
+
 (defun showcase ()
   (run-app *showcase-app*)) 
