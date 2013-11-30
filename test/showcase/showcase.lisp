@@ -1,19 +1,27 @@
 (in-package :xul)
 
+(defun file-string (path)
+  (with-open-file (stream path)
+    (let ((data (make-string (file-length stream))))
+      (read-sequence data stream)
+      data)))
+
 (define-component showcase ()
-  ((selected-page :accessor selected-page))
+  ((selected-page :accessor selected-page
+		  :initform (first *showcase-pages*)))
   (:initialize (showcase))
   (:render (showcase)
 	   (<:list-box
 	     (<:style= "width:10em")
 	     (on-select= (lambda (index)
-			   (let* ((selected-page (nth index (pages showcase)))
-				  (new-component (cadr selected-page)))
-			     (setf (selected-page showcase) selected-page)
-			     (add-component showcase 'child new-component))))
+			   (setf (selected-page showcase)
+				 (nth index *showcase-pages*))))
 	     (loop for page in (pages showcase)
 		do
-		  (<:list-item (<:label (car page)))))
+		  (<:list-item (<:label (car page))
+			       (when (eql (selected-page showcase)
+					  page)
+				 (<:selected= t)))))
 	   (<:splitter (<:collapse= :before)
 		       (<:grippy))
 	   (<:tab-box (<:flex= 1)
@@ -22,15 +30,28 @@
 			(<:tab (<:label= "Source")))
 		      (<:tab-panels
 			(<:tab-panel
-			  (<:vbox (<:flex= 1)))
+			  (<:vbox (<:flex= 1)
+				  (let ((component (make-instance (getf (cdr (selected-page showcase)) :component))))
+				    (render component))))
 			(<:tab-panel
-			  "Source code")))))
+			  (let ((source (getf (cdr (selected-page showcase)) :source)))
+			    (file-string source)))))))
 
-(defmethod pages ((showcase showcase))
-  '(("Buttons" . buttons-showcase)
-    ("Checkboxes" . checkboxes-showcase)
-    ("Radiobuttons" . radiobuttons-showcase)
-    ("Lists" . lists-showcase)))
+(defparameter *showcase-pages*
+  (flet ((source (filename)
+	   (asdf:system-relative-pathname :cl-xul (format nil "test/showcase/~A" filename))))
+    `(("Buttons"
+       :component buttons-showcase
+       :source ,(source "buttons.lisp"))
+      ("Checkboxes"
+       :component checkboxes-showcase
+       :source ,(source "checkboxes.lisp"))
+      ("Radiobuttons"
+       :component radiobuttons-showcase
+       :source ,(source "radiobuttons.lisp"))
+      ("Lists"
+       :component lists-showcase
+       :source ,(source "lists.lisp")))))
 
 (defparameter *showcase-app*
   (make-instance 'xul-application
