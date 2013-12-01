@@ -8,6 +8,7 @@
 	   #:remove-component
 	   #:children
 	   #:parent
+	   #:with-child-components
 	   #:xul-application
 	   #:run-app
 	   #:on-command=
