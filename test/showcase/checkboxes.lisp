@@ -8,7 +8,9 @@
    (state-state :initform "(no input yet)"
 		:accessor state-state)
    (images-state :initform "(no input yet)"
-		 :accessor images-state))
+		 :accessor images-state)
+   (orient-state :initform "(no input yet)"
+		 :accessor orient-state))
   (:render (comp)
 	   (<:vbox (<:flex= 1)
 		   (<:style= "overflow: auto")
@@ -92,7 +94,33 @@
     (<:hbox (<:pack= :center)
 	    (<:description (princ-to-string (state-state comp))))))
 
-(defun render-checkboxes-orientation (comp))
+(defun render-checkboxes-orientation (comp)
+  (<:group-box
+    (<:flex= 1)
+    (<:caption (<:label= "orientation"))
+    (<:vbox
+      (<:description "These show different orientation.")
+      (<:checkbox (<:label= "Left")
+		  (on-command=* (setf (orient-state comp)
+				      "A checkbox to the left of the label")))
+      (<:checkbox (<:label= "Right")
+		  (<:dir= :reverse)
+		  (on-command=* (setf (orient-state comp)
+				      "A checkbox to the right of the label")))
+      (<:checkbox (<:label= "Above")
+		  (<:orient= :vertical)
+		  (<:dir= :forward)
+		  (on-command=* (setf (orient-state comp)
+				      "A checkbox above the label")))
+      (<:checkbox (<:label= "Below")
+		  (<:orient= :vertical)
+		  (<:dir= :reverse)
+		  (on-command=* (setf (orient-state comp)
+				      "A checkbox below the label")))
+      (<:checkbox (on-command=* (setf (orient-state comp)
+				      "A checkbox with no label"))))
+    (<:hbox (<:pack= :center)
+	    (princ-to-string (orient-state comp)))))
 
 (defun render-checkboxes-images (comp)
   (<:group-box
