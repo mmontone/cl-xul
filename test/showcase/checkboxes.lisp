@@ -6,7 +6,9 @@
    (access-state :initform "(no input yet)"
 	      :accessor access-state)
    (state-state :initform "(no input yet)"
-		:accessor state-state))
+		:accessor state-state)
+   (images-state :initform "(no input yet)"
+		 :accessor images-state))
   (:render (comp)
 	   (<:vbox (<:flex= 1)
 		   (<:style= "overflow: auto")
@@ -91,4 +93,31 @@
 	    (<:description (princ-to-string (state-state comp))))))
 
 (defun render-checkboxes-orientation (comp))
-(defun render-checkboxes-images (comp))
+
+(defun render-checkboxes-images (comp)
+  (<:group-box
+    (<:flex= 1)
+    (<:caption (<:label= "images"))
+    (let ((image (asdf:system-relative-pathname :cl-xul-test
+						"test/showcase/images/folder_yellow_open.png")))
+      (<:vbox
+	(<:description "These have images.")
+	(<:checkbox (<:label= "Left")
+		    (src= image)
+		    (on-command=* (setf (images-state comp) "A checkbox to the left of the label")))
+	(<:checkbox (<:label= "Right")
+		    (<:dir= :reverse)
+		    (src= image)
+		    (on-command=* (setf (images-state comp) "A checkbox to the right of the label")))
+	(<:checkbox (<:label= "Above")
+		    (<:dir= :forward)
+		    (<:orient= :vertical)
+		    (src= image)
+		    (on-command=* (setf (images-state comp) "A checkbox above the label")))
+	(<:checkbox (<:label= "Below")
+		    (<:dir= :reverse)
+		    (<:orient= :vertical)
+		    (src= image)
+		    (on-command=* (setf (images-state comp) "A checkbox below the label"))))
+      (<:hbox (<:pack= :center)
+	      (princ-to-string (images-state comp))))))
