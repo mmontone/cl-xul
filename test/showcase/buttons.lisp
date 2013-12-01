@@ -6,7 +6,9 @@
    (access-state :initform "(no input yet)"
 		 :accessor access-state)
    (state-state :initform "(no input yet)"
-		:accessor state-state))
+		:accessor state-state)
+   (labeling-state :initform "(no input yet)"
+		   :accessor labeling-state))
   (:render (comp)
 	   (<:vbox (<:flex= 1)
 		   (<:style= "overflow: auto")
@@ -76,5 +78,41 @@
     (<:hbox (<:pack= :center)
 	    (<:description (princ-to-string (state-state comp))))))
 
+(defun render-buttons-labeling (comp)
+  (<:group-box
+   (<:caption (<:label= "These buttons show different labeling."))
+   (let ((image (asdf:system-relative-pathname :cl-xul-test
+					       "test/showcase/images/folder_yellow_open.png")))
+     (<:hbox (<:pack= :center)
+	     (<:vbox
+	       (<:button (<:flex= 1)
+			 (<:label "No image")
+			 (on-command=* (setf (labeling-state comp) "A button with a label only")))
+	       (<:button (<:label= "Left")
+			 (image= image)
+			 (on-command=* (setf (labeling-state comp) "A button with both label and image")))
+	       (<:button (<:label= "Right")
+			 (image= image)
+			 (<:dir= :reverse)
+			 (on-command=* (setf (labeling-state comp) "A button with the image to the right of the label"))))
+	     (<:vbox
+	       (<:button (<:label= "Above")
+			 (image= image)
+			 (<:orient= :vertical)
+			 (<:dir= :forward)
+			 (on-command=* (setf (labeling-state comp) "A button with the image above the label")))
+	       (<:button (<:label= "Below")
+			 (image= image)
+			 (<:orient= :vertical)
+			 (<:dir= :reverse)
+			 (on-command=* (setf (labeling-state comp) "A button with the image above the label"))))
+	     (<:vbox
+	       (<:button (<:flex= 1)
+			 (on-command=* (setf (labeling-state comp) "A button with neither image nor label")))
+	       (<:button (image= image)
+			 (on-command=* (setf (labeling-state comp) "A button with an image only")))))
+     (<:hbox (<:pack= :center)
+	     (princ-to-string (labeling-state comp))))))
+
 (defun render-menu-buttons (comp))
-(defun render-buttons-labeling (comp))
+
