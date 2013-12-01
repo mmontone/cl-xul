@@ -18,7 +18,8 @@
 	   #:on-select=
 	   #:on-select=*
 	   #:file
-	   #:src=))
+	   #:src=
+	   #:image=))
 
 (defpackage xul-builder
   (:nicknames :<)

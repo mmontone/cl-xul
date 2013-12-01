@@ -235,6 +235,10 @@
   (<:src=
    (file pathname)))
 
+(defun image= (pathname)
+  (<:image=
+   (file pathname)))
+
 (defmethod app-folder ((app xul-application))
   (pathname (format nil "/tmp/~A/" (name app))))
 
