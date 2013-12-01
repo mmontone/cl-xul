@@ -86,8 +86,8 @@
       ("Checkboxes"
        :component checkboxes-showcase
        :source ,(source "checkboxes.lisp"))
-      ("Radiobuttons"
-       :component radiobuttons-showcase
+      ("Radio buttons"
+       :component radio-buttons-showcase
        :source ,(source "radiobuttons.lisp"))
       ("Images"
        :component images-showcase

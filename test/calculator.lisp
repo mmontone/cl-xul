@@ -33,7 +33,7 @@
 				(setf (w::value display) 0)
 				)))))
 		 (add-component calc 'display (w::text-box :value 0))
-		 (loop for i from 1 to 9 do
+		 (loop for i from 0 to 9 do
 		      (add-component calc
 				     (intern (format nil "BUTTON-~A" i))
 				     (w::button :label (princ-to-string i)
@@ -82,25 +82,25 @@
 				(w::button :label "="
 					   :on-command
 					   (lambda ()
-					     (setf (clean-display-p calc) t)
 					     (xul::with-child-components (display)
 						 calc
-					       (push (w::value display)
-						     (numbers calc))
 					       (when (operation calc)
+						 (setf (clean-display-p calc) t)
+						 (push (w::value display)
+						       (numbers calc))
 						 (let ((result
 							(apply (operation calc)
 							       (reverse (numbers calc)))))
 						   (setf (w::value display)
 							 result)
-						   (setf (numbers calc) (list result))))
-					       (setf (operation calc) nil)))))))
+						   (setf (numbers calc) (list result))
+						   (setf (operation calc) nil)))))))))
   (:render (calc)
 	   (<:vbox
 	     (xul::with-child-components (display) calc
 	       (render display))
 	     (xul::with-child-components
-		 (button-1 button-2 button-3
+		 (button-0 button-1 button-2 button-3
 			   button-4 button-5 button-6
 			   button-7 button-8 button-9)
 		 calc
@@ -113,7 +113,8 @@
 			 (render button-6))
 		 (<:hbox (render button-7)
 			 (render button-8)
-			 (render button-9))))
+			 (render button-9))
+		 (<:hbox (render button-0))))
 	     (xul::with-child-components (plus-button
 					  reset-button
 					  result-button
