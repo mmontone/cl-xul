@@ -7,10 +7,12 @@
 		     (<:on-command=
 		       (xul::with-open-dialog
 			   ("Dialog test"
-			    '(:modal "true"))
+			    '(:modal "yes"
+			      :resizable "no"))
 			 (<:dialog
 			  (<:id= "mydialog")
 			  (<:title= "My dialog")
+			  (<:buttons= "accept, cancel")
 			  (<:ondialogaccept= "alert('Accept!!');")
 			  (<:ondialogcancel= "alert('Cancel!!');")
 			  (<:description "This is a dialog")))))))

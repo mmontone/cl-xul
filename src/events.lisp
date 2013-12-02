@@ -98,7 +98,8 @@
 		     (mapcar (lambda (feature)
 			       (destructuring-bind (key . value) feature
 				 (format nil "~A=~A"
-					 key value)))
+					 (string-downcase (princ-to-string key))
+					 (string-downcase (princ-to-string value)))))
 			     (alexandria:plist-alist features)))))
       (let ((dialog-pathname 
 	     (merge-pathnames
