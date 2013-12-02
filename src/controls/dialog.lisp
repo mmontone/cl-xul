@@ -16,7 +16,7 @@ These buttons will be placed in the correct locations for the user's platform.")
 (defmethod serialize-xul ((dialog dialog))
   (cxml:with-element "dialog"
     (cxml:attribute "xmlns" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")
-    ;(cxml:attribute "xmlns:html" "http://www.w3.org/1999/xhtml")
+    (cxml:attribute "xmlns:html" "http://www.w3.org/1999/xhtml")
     (loop for attribute in (attributes (class-of dialog))
 	 when (slot-boundp dialog (closer-mop:slot-definition-name attribute))
 	 do
