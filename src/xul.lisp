@@ -182,8 +182,8 @@
 	((root-component app)
 	 (let ((xul (with-xul
 		      (<:window (<:title= (name app))
-				(<:width= "1000")
-				(<:height= "1000")
+				;(<:width= "1000")
+				;(<:height= "1000")
 				(render (root-component app))))))
 	   (serialize-xul xul)
 	   
