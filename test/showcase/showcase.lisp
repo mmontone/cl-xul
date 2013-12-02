@@ -25,7 +25,7 @@
 			       (<:accesskey= "h")
 			       (<:menu-popup
 				 (<:menu-item (<:label= "About")
-					      (on-command=* (show-help-about showcase)))))))
+					      (<:on-command= (show-help-about)))))))
 		   (<:hbox (<:flex= 1)
 			   (<:list-box
 			     (<:style= "width:10em")
@@ -57,10 +57,16 @@
 								    (let ((source (getf (cdr (selected-page showcase)) :source)))
 								      (file-string source))))))))))
 
-(define-component about-cl-xul-component ()
-  ()
-  (:render (comp)
-	   (<:hbox
+(defun show-help-about ()
+  (xul::with-open-dialog
+      ("About"
+       '(:modal "yes"
+	 :resizable "no"))
+    (<:dialog
+      (<:id= "about")
+      (<:title= "About")
+      (<:buttons= "accept")
+      (<:hbox
 	     (<:image (src= (asdf:system-relative-pathname
 			     :cl-xul-test
 			     "test/showcase/images/lisplogo_warning2_256.png")))
@@ -71,11 +77,7 @@
 	       (<:a (<:href= "https://github.com/mmontone/cl-xul")
 		    ;(<:target= "_blank")
 		    "https://github.com/mmontone/cl-xul")
-	       (<:p "Author: Mariano Montone")))))
-
-(defun show-help-about (showcase)
-  (add-component showcase 'child
-		 (make-instance 'about-cl-xul-component)))		 
+	       (<:p "Author: Mariano Montone"))))))
 
 (defparameter *showcase-pages*
   (flet ((source (filename)
