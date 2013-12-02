@@ -18,12 +18,13 @@
   ;(break "Handling callback: ~A" callback)
   (let ((handler-id (cdr (assoc :id callback))))
     (let ((handler (get-callback-handler handler-id)))
-      ;(break "~A" handler)
-      (funcall handler callback)))
+      (let ((*app* (get-application-named (cdr (assoc :app callback)))))
+	
+					;(break "~A" handler)
+      (funcall handler callback)
 
-  ;; Apply view updates after possible modifications
-  (let ((*app* (get-application-named (cdr (assoc :app callback)))))
-    (update-xul *app*)))
+      ;; Apply view updates after possible modifications
+      (update-xul *app*)))))
 
 (defun on-command= (function)
   (let ((handler-id
@@ -86,3 +87,45 @@
 
 (defmacro on-select=* ((value) &body body)
   `(on-select= (lambda (,value) ,@body)))
+
+;; Dialogs
+
+(defun open-dialog (dialog name features &rest args)
+  (let ((dialog-element (with-xul (funcall dialog))))
+    
+    (flet ((serialize-features (features)
+	     (format nil "~{~a~^, ~}"
+		     (mapcar (lambda (feature)
+			       (destructuring-bind (key . value) feature
+				 (format nil "~A=~A"
+					 key value)))
+			     (alexandria:plist-alist features)))))
+      (let ((dialog-pathname 
+	     (merge-pathnames
+	      (pathname (format nil "chrome/content/dialog~A.xul" (id dialog-element)))
+	      (app-folder *app*))))
+      
+	;; First, serialize the dialog to a xul file
+	(with-open-file (stream dialog-pathname
+				:direction :output
+				:if-exists :supersede
+				:if-does-not-exist :create)
+	  (let ((output (cxml:make-character-stream-sink stream :omit-xml-declaration-p t)))
+	    (cxml:with-xml-output output
+	      (serialize-xul dialog-element))))
+
+	;; Then bind the dialog in the command
+	(let ((dialog-uri (format nil "chrome://~A/content/dialog~A.xul"
+				  (name *app*)
+				  (id dialog-element))))
+	  (format nil "openDialog('~A', '~A', '~A', ~A);"
+		  dialog-uri
+		  name
+		  (serialize-features features)
+		  (json:encode-json-plist-to-string args)))))))
+
+(defmacro with-open-dialog ((name features &rest args) &body body)
+  `(open-dialog (lambda () ,@body)
+		,name
+		,features
+		,@args))

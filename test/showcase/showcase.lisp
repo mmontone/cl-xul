@@ -95,6 +95,9 @@
       ("Lists"
        :component lists-showcase
        :source ,(source "lists.lisp"))
+      ("Dialogs"
+       :component dialogs-showcase
+       :source ,(source "dialogs.lisp"))
       ("Components"
        :component components-showcase
        :source ,(source "components.lisp"))
@@ -109,4 +112,4 @@
 			:root-component (make-instance 'showcase)
 			:build-id "0001"
 			:id "Showcase")))
-    (run-app app))) 
+    (run-app app)))

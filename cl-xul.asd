@@ -54,6 +54,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "tabs")
 			 (:file "splitter")
 			 (:file "grid")
+			 (:file "dialog")
 			 (:file "browser")
 			 (:file "html"))
 			:serial t)
