@@ -113,11 +113,18 @@
        :component showcase
        :source ,(source "showcase.lisp")))))
 
+(defclass showcase-application (xul-application)
+  ()
+  (:default-initargs
+   :name "showcase"
+    :root-component (make-instance 'showcase)
+    :build-id "0001"
+    :id "Showcase"))
+
+(defmethod xul::initialize-window ((app showcase-application))
+  (<:window (<:title= (xul::name app))
+	    (<:size-mode= :maximized)
+	    (render (xul::root-component app))))
+
 (defun showcase ()
-  (let ((app
-	 (make-instance 'xul-application
-			:name "showcase"
-			:root-component (make-instance 'showcase)
-			:build-id "0001"
-			:id "Showcase")))
-    (run-app app)))
+  (run-app (make-instance 'showcase-application)))

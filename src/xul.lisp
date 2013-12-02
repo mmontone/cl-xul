@@ -181,10 +181,7 @@
       (cond
 	((root-component app)
 	 (let ((xul (with-xul
-		      (<:window (<:title= (name app))
-				;(<:width= "1000")
-				;(<:height= "1000")
-				(render (root-component app))))))
+		      (initialize-window app))))
 	   (serialize-xul xul)
 	   
 	   ;; Mark the whole root component clean before going on
@@ -194,6 +191,11 @@
 	 (serialize-xul (app-xul app)))
 	(t (error "Either xul or root component is needed in application"))))
     stream))
+
+(defgeneric initialize-window (app)
+  (:method ((app xul-application))
+    (<:window (<:title= (name app))
+	      (render (root-component app)))))
 
 (defparameter *xul-runner* "/usr/bin/firefox" "The xul runner. It can be the XUL runner or Mozilla firefox")
 
