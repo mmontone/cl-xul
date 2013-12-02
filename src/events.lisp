@@ -113,6 +113,7 @@
 				:if-does-not-exist :create)
 	  (let ((output (cxml:make-character-stream-sink stream :omit-xml-declaration-p t)))
 	    (cxml:with-xml-output output
+	      (format stream "<?xml-stylesheet href=\"chrome://global/skin/\" type=\"text/css\"?>")
 	      (serialize-xul dialog-element))))
 
 	;; Then bind the dialog in the command

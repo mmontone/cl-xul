@@ -15,4 +15,5 @@
 			  (<:buttons= "accept, cancel")
 			  (<:ondialogaccept= "alert('Accept!!');")
 			  (<:ondialogcancel= "alert('Cancel!!');")
-			  (<:description "This is a dialog")))))))
+			  (<:box
+			    (<:description "This is a dialog"))))))))
