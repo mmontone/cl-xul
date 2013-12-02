@@ -10,7 +10,7 @@
    (labeling-state :initform "(no input yet)"
 		   :accessor labeling-state))
   (:render (comp)
-	   (<:vbox (<:flex= 1)
+	   (<:vbox ;(<:flex= 1)
 		   (<:style= "overflow: auto")
 		   (<:description "XUL Buttons")
 		   (render-buttons-tab comp)

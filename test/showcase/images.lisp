@@ -3,8 +3,13 @@
 (define-component images-showcase ()
   ()
   (:render (comp)
-	   (<:image (src= (asdf:system-relative-pathname
-			   :cl-xul-test "test/showcase/images/lisplogo_fancy_256.png")))
-	   (<:image (src= (asdf:system-relative-pathname
+	   (<:vbox
+	     (<:image
+	       (<:flex= 0)
+	       (src= (asdf:system-relative-pathname
+			     :cl-xul-test "test/showcase/images/lisplogo_fancy_256.png")))
+	     (<:image
+	       (<:flex= 0)
+	       (src= (asdf:system-relative-pathname
 			   :cl-xul-test "test/showcase/images/mozilla-foundation-onblack.png")))
-	   ))
+	   )))

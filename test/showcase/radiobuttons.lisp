@@ -12,16 +12,16 @@
    (orient-state :initform "(no input yet)"
 		 :accessor orient-state))
   (:render (comp)
-	   (<:vbox (<:flex= 1)
-		   (<:style= "overflow: auto")
-		   (<:description "XUL Radio-Buttons")
-		   (<:hbox
-		     (render-radio-buttons-tab comp)
-		     (render-radio-buttons-access comp)
-		     (render-radio-buttons-state comp))
-		   (<:hbox
-		     (render-radio-buttons-orientation comp)
-		     (render-radio-buttons-images comp)))))
+	   (<:vbox 
+	     (<:style= "overflow: auto")
+	     (<:description "XUL Radio-Buttons")
+	     (<:hbox
+	       (render-radio-buttons-tab comp)
+	       (render-radio-buttons-access comp)
+	       (render-radio-buttons-state comp))
+	     (<:hbox
+	       (render-radio-buttons-orientation comp)
+	       (render-radio-buttons-images comp)))))
 
 (defun render-radio-buttons-tab (comp)
   (<:group-box

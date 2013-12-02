@@ -41,21 +41,27 @@
 							     page)
 						 (<:selected= t)))))
 			   (<:splitter (<:collapse= :before)
+				       (<:resizebefore= :closest)
+				       (<:resizeafter= :grow)
 				       (<:grippy))
-			   (<:tab-box (<:flex= 1)
+			   (<:box (<:flex= 1)
+			     (<:tab-box (<:flex= 1)
+					
 				      (<:tabs
 					(<:tab (<:label= "Examples"))
 					(<:tab (<:label= "Source")))
-				      (<:tab-panels
-					(<:tab-panel (<:height= 800)
-						     (<:width= 600)
-						     (<:vbox (<:flex= 1)
-							     (<:style= "overflow:auto")
-							     (render (get-component showcase 'child))))
-					(<:tab-panel (<:style= "overflow:auto;")
-						     (<:description (<:style= "white-space: pre-wrap;")
-								    (let ((source (getf (cdr (selected-page showcase)) :source)))
-								      (file-string source))))))))))
+				      (<:tab-panels (<:flex= 1)
+					(<:tab-panel
+					  (<:vbox (<:flex= 1)
+						  (<:style= "overflow:auto")
+						  (render (get-component showcase 'child))))
+					(<:tab-panel
+					  (<:vbox (<:flex= 1)
+						  (<:style= "overflow:auto;")
+						  (<:description (<:style= "white-space: pre-wrap;")
+								 (let ((source (getf (cdr (selected-page showcase)) :source)))
+								   (file-string source)))))
+					(<:tab-panel))))))))
 
 (defun show-help-about ()
   (xul::with-open-dialog

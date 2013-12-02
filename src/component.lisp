@@ -208,5 +208,6 @@
 (defgeneric render (component))
 
 (defmethod render :around ((component component))
-  (<:box (<:id= (id component))
+  (<:box (<:flex= 1)
+	 (<:id= (id component))
 	 (call-next-method)))

@@ -3,7 +3,8 @@
 (define-component dialogs-showcase ()
   ()
   (:render (comp)
-	   (<:button (<:label= "Open dialog")
+	   (<:vbox 
+	     (<:button (<:label= "Open dialog")
 		     (<:on-command=
 		       (xul::with-open-dialog
 			   ("Dialog test"
@@ -16,4 +17,4 @@
 			  (<:ondialogaccept= "alert('Accept!!');")
 			  (<:ondialogcancel= "alert('Cancel!!');")
 			  (<:box
-			    (<:description "This is a dialog"))))))))
+			    (<:description "This is a dialog")))))))))

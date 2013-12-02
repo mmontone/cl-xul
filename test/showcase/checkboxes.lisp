@@ -12,16 +12,16 @@
    (orient-state :initform "(no input yet)"
 		 :accessor orient-state))
   (:render (comp)
-	   (<:vbox (<:flex= 1)
-		   (<:style= "overflow: auto")
-		   (<:description "XUL Checkboxes")
-		   (<:hbox
-		     (render-checkboxes-tab comp)
-		     (render-checkboxes-access comp)
-		     (render-checkboxes-state comp))
-		   (<:hbox
-		     (render-checkboxes-orientation comp)
-		     (render-checkboxes-images comp)))))
+	   (<:vbox
+	     (<:style= "overflow: auto")
+	     (<:description "XUL Checkboxes")
+	     (<:hbox
+	       (render-checkboxes-tab comp)
+	       (render-checkboxes-access comp)
+	       (render-checkboxes-state comp))
+	     (<:hbox
+	       (render-checkboxes-orientation comp)
+	       (render-checkboxes-images comp)))))
 
 (defun render-checkboxes-tab (comp)
   (<:group-box
