@@ -132,9 +132,26 @@
 		,features
 		,@args))
 
+(defparameter *icons* (list
+		       :question "dialog-question-2.png"
+		       :important "dialog-important-2.png"
+		       :ok "dialog-ok-3.png"
+		       :information "dialog-information.png"
+		       :warning "dialog-warning-2.png"))
+		       
+(defun icon-path (id)
+  (let ((pathname (or (getf *icons* id)
+		      (error "Icon not found: ~A" id))))
+    (or
+     (probe-file
+      (asdf:system-relative-pathname :cl-xul
+				     (format nil "resources/icons/~A" pathname)))
+     (error "Icon file path not found: ~A" pathname))))
+  
 (defun ask (question &key (name "Question")
 		       on-accept
-		       on-cancel)
+		       on-cancel
+		       (icon :question))
   (with-open-dialog (name
 		     '(:modal "yes"
 		       :resizable "no"))
@@ -145,11 +162,60 @@
       (<:ondialogaccept= on-accept)
       (<:ondialogcancel= on-cancel)
       (<:hbox (<:flex= 1)
-	(<:hbox (<:align= :center)
-		(<:flex= 1)
-	  (<:image (src= (asdf:system-relative-pathname :cl-xul "resources/icons/dialog-question-2.png"))))
-	(<:hbox (<:flex= 1) (<:align= :center)
-	  (<:description  question))))))
+	      (when icon
+		(<:hbox (<:align= :center)
+			(<:flex= 1)
+			(<:image (src= (icon-path icon)))))
+	      (<:hbox (<:flex= 1) (<:align= :center)
+		      (<:description  question))))))
+
+(defun prompt (message
+	       &key (name "Prompt")
+		 on-accept
+		 on-cancel
+		 (icon :ok)
+		 (value nil))
+  (with-open-dialog (name
+		     '(:modal "yes"
+		       :resizable "no"))
+    (let ((value value))
+      (<:dialog
+	(<:id= "prompt")
+	(<:title= name)
+	(<:buttons= "accept, cancel")
+	(<:ondialogaccept= (lambda ()
+			     (funcall on-accept value)))
+	(<:ondialogcancel= on-cancel)
+	(<:hbox (<:flex= 1)
+		(when icon
+		  (<:hbox (<:align= :center)
+			  (<:flex= 1)
+			  (<:image (src= (icon-path icon)))))
+		(<:vbox
+		  (<:hbox (<:flex= 1) (<:align= :center)
+			  (<:description  message))
+		  (<:hbox (<:flex= 1)
+			  (<:text-box (on-change=* (val) (setf value val))
+				      (when value (<:value= value))))))))))
+
+(defun inform (message &key (name "Information")
+			 on-accept
+			 (icon :information))
+  (with-open-dialog (name
+		     '(:modal "yes"
+		       :resizable "no"))
+    (<:dialog
+      (<:id= "information")
+      (<:title= name)
+      (<:buttons= "accept")
+      (<:ondialogaccept= on-accept)
+      (<:hbox (<:flex= 1)
+	      (when icon
+		(<:hbox (<:align= :center)
+			(<:flex= 1)
+			(<:image (src= (icon-path icon)))))
+	      (<:hbox (<:flex= 1) (<:align= :center)
+		      (<:description  message))))))
 
 (defun open-window (window &optional features &rest args)
   (let ((window-element (with-xul (funcall window))))

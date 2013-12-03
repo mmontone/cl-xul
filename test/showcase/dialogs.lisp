@@ -29,7 +29,13 @@
 			    (<:buttons= "accept")
 			    (render (make-instance 'my-dialog))))))
 	     (<:button (<:label= "Ask")
-		       (<:on-command= (ask "Are you sure?")))			
+		       (<:on-command= (ask "Are you sure?")))
+	     (<:button (<:label= "Prompt")
+		       (<:on-command= (prompt "What is your name?"
+					      :on-accept (lambda (name)
+							   (inform (format nil "Your name is ~A" name))))))
+	     (<:button (<:label= "Inform")
+		       (<:on-command= (inform "This is information")))
 	     (<:button (<:label= "Open component in window")
 		       (<:on-command=
 			(with-open-window ()

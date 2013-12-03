@@ -24,7 +24,9 @@
 	   #:with-open-window
 	   #:open-dialog
 	   #:with-open-dialog
-	   #:ask))
+	   #:ask
+	   #:prompt
+	   #:inform))
 
 (defpackage xul-builder
   (:nicknames :<)
