@@ -132,6 +132,25 @@
 		,features
 		,@args))
 
+(defun ask (question &key (name "Question")
+		       on-accept
+		       on-cancel)
+  (with-open-dialog (name
+		     '(:modal "yes"
+		       :resizable "no"))
+    (<:dialog
+      (<:id= "question")
+      (<:title= name)
+      (<:buttons= "accept, cancel")
+      (<:ondialogaccept= on-accept)
+      (<:ondialogcancel= on-cancel)
+      (<:hbox (<:flex= 1)
+	(<:hbox (<:align= :center)
+		(<:flex= 1)
+	  (<:image (src= (asdf:system-relative-pathname :cl-xul "resources/icons/dialog-question-2.png"))))
+	(<:hbox (<:flex= 1) (<:align= :center)
+	  (<:description  question))))))
+
 (defun open-window (window &optional features &rest args)
   (let ((window-element (with-xul (funcall window))))
     (flet ((serialize-features (features)

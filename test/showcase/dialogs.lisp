@@ -6,7 +6,7 @@
 	   (<:vbox 
 	     (<:button (<:label= "Open dialog")
 		       (<:on-command=
-			(xul::with-open-dialog
+			(with-open-dialog
 			    ("Dialog test"
 			     '(:modal "yes"
 			       :resizable "no"))
@@ -20,7 +20,7 @@
 			      (<:description "This is a dialog"))))))
 	     (<:button (<:label= "Open component in dialog")
 		       (<:on-command=
-			(xul::with-open-dialog ("Component in dialog"
+			(with-open-dialog ("Component in dialog"
 						'(:modal "yes"
 						  :resizable "no"))
 			  (<:dialog
@@ -28,9 +28,11 @@
 			    (<:title= "Component in dialog")
 			    (<:buttons= "accept")
 			    (render (make-instance 'my-dialog))))))
+	     (<:button (<:label= "Ask")
+		       (<:on-command= (ask "Are you sure?")))			
 	     (<:button (<:label= "Open component in window")
 		       (<:on-command=
-			(xul::with-open-window ()
+			(with-open-window ()
 			  (<:window
 			    (<:id= "componentinwindow")
 			    (<:title= "Component in window")
