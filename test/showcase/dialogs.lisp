@@ -28,6 +28,13 @@
 			    (<:title= "Component in dialog")
 			    (<:buttons= "accept")
 			    (render (make-instance 'my-dialog))))))
+	     (<:button (<:label= "Open component in window")
+		       (<:on-command=
+			(xul::with-open-window ()
+			  (<:window
+			    (<:id= "componentinwindow")
+			    (<:title= "Component in window")
+			    (render (make-instance 'my-dialog))))))
 	     )))
 
 (define-component my-dialog ()

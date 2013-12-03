@@ -131,3 +131,42 @@
 		,name
 		,features
 		,@args))
+
+(defun open-window (window &optional features &rest args)
+  (let ((window-element (with-xul (funcall window))))
+    (flet ((serialize-features (features)
+	     (format nil "~{~a~^, ~}"
+		     (mapcar (lambda (feature)
+			       (destructuring-bind (key . value) feature
+				 (format nil "~A=~A"
+					 (string-downcase (princ-to-string key))
+					 (string-downcase (princ-to-string value)))))
+			     (alexandria:plist-alist features)))))
+      (let ((window-pathname 
+	     (merge-pathnames
+	      (pathname (format nil "chrome/content/window~A.xul" (id window-element)))
+	      (app-folder *app*))))
+      
+	;; First, serialize the window to a xul file
+	(with-open-file (stream window-pathname
+				:direction :output
+				:if-exists :supersede
+				:if-does-not-exist :create)
+	  (let ((output (cxml:make-character-stream-sink stream)))
+	    (cxml:with-xml-output output
+	      ;(format stream "<?xml-stylesheet href=\"chrome://global/skin/\" type=\"text/css\"?>")
+	      (serialize-xul window-element))))
+
+	;; Then bind the window in the command
+	(let ((window-uri (format nil "chrome://~A/content/window~A.xul"
+				  (name *app*)
+				  (id window-element))))
+	  (format nil "window.open('~A', '~A', ~A);"
+		  window-uri
+		  (serialize-features features)
+		  (json:encode-json-plist-to-string args)))))))
+
+(defmacro with-open-window ((&optional features &rest args) &body body)
+  `(open-window (lambda () ,@body)
+		,features
+		,@args))
