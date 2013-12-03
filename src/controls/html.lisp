@@ -1,17 +1,17 @@
 (in-package :xul)
 
 (define-xul-element html-element (xul-element)
-  ())
+  (style))
 
 (defmethod element-name ((element html-element))
   (let ((name (call-next-method)))
     (format nil "html:~A" name)))
 
 (define-xul-element a (html-element)
-  (href target style))
+  (href target))
 
 (define-xul-element h1 (html-element)
-  (style))
+  ())
 
 (define-xul-element div (html-element container-element)
   ())

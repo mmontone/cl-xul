@@ -77,10 +77,12 @@
 			     :cl-xul-test
 			     "test/showcase/images/lisplogo_warning2_256.png")))
 	     (<:div
+	       (<:style= "background-color:white;margin-left:10px; padding:10px;")
 	       (<:h1 "CL-XUL")
 	       (<:p "Library for Mozilla XUL GUI programming in Common Lisp")
 	       (<:p "Project homepage: ")
-	       (<:a (<:href= "https://github.com/mmontone/cl-xul")
+	       (<:a (<:style= "color:blue;")
+		    (<:href= "https://github.com/mmontone/cl-xul")
 		    ;(<:target= "_blank")
 		    "https://github.com/mmontone/cl-xul")
 	       (<:p "Author: Mariano Montone"))))))
