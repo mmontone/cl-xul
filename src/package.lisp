@@ -19,7 +19,11 @@
 	   #:on-select=*
 	   #:file
 	   #:src=
-	   #:image=))
+	   #:image=
+	   #:open-window
+	   #:with-open-window
+	   #:open-dialog
+	   #:with-open-dialog))
 
 (defpackage xul-builder
   (:nicknames :<)
