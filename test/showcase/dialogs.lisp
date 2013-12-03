@@ -24,11 +24,9 @@
 						'(:modal "yes"
 						  :resizable "no"))
 			  (<:dialog
-			    (<:id= "mydialog")
-			    (<:title= "My dialog")
-			    (<:buttons= "accept, cancel")
-			    (<:ondialogaccept= "alert('Accept!!');")
-			    (<:ondialogcancel= "alert('Cancel!!');")
+			    (<:id= "componentindialog")
+			    (<:title= "Component in dialog")
+			    (<:buttons= "accept")
 			    (render (make-instance 'my-dialog))))))
 	     )))
 
