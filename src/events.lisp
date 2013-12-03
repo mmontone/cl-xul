@@ -165,7 +165,8 @@
 	      (when icon
 		(<:hbox (<:align= :center)
 			(<:flex= 1)
-			(<:image (src= (icon-path icon)))))
+			(<:image (src= (or (and (symbolp icon) (icon-path icon))
+					   icon)))))
 	      (<:hbox (<:flex= 1) (<:align= :center)
 		      (<:description  question))))))
 
@@ -190,7 +191,8 @@
 		(when icon
 		  (<:hbox (<:align= :center)
 			  (<:flex= 1)
-			  (<:image (src= (icon-path icon)))))
+			  (<:image (src= (or (and (symbolp icon) (icon-path icon))
+					     icon)))))
 		(<:vbox
 		  (<:hbox (<:flex= 1) (<:align= :center)
 			  (<:description  message))
@@ -213,7 +215,8 @@
 	      (when icon
 		(<:hbox (<:align= :center)
 			(<:flex= 1)
-			(<:image (src= (icon-path icon)))))
+			(<:image (src= (or (and (symbolp icon) (icon-path icon))
+					   icon)))))
 	      (<:hbox (<:flex= 1) (<:align= :center)
 		      (<:description  message))))))
 
