@@ -111,6 +111,9 @@
       ("Dialogs"
        :component dialogs-showcase
        :source ,(source "dialogs.lisp"))
+      ("HTML"
+       :component html-showcase
+       :source ,(source "html.lisp"))
       ("Components"
        :component components-showcase
        :source ,(source "components.lisp"))

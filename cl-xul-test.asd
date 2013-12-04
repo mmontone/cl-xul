@@ -46,6 +46,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "images")
 			 (:file "lists")
 			 (:file "trees")
+			 (:file "html")
 			 (:file "dialogs")
 			 (:file "components"))
 			:serial t)

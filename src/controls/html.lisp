@@ -63,3 +63,9 @@
 
 (define-html-element p (html-element)
   ())
+
+(define-html-element ul (html-element container-element)
+  ())
+
+(define-html-element li (html-element)
+  ())
