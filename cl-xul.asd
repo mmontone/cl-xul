@@ -47,6 +47,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "text")
 			 (:file "menu")
 			 (:file "list")
+			 (:file "tree")
 			 (:file "panel")
 			 (:file "toolbar")
 			 (:file "tooltip")

@@ -105,6 +105,9 @@
       ("Lists"
        :component lists-showcase
        :source ,(source "lists.lisp"))
+      ("Trees"
+       :component trees-showcase
+       :source ,(source "trees.lisp"))
       ("Dialogs"
        :component dialogs-showcase
        :source ,(source "dialogs.lisp"))

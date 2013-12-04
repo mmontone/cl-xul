@@ -45,6 +45,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "radiobuttons")
 			 (:file "images")
 			 (:file "lists")
+			 (:file "trees")
 			 (:file "dialogs")
 			 (:file "components"))
 			:serial t)
