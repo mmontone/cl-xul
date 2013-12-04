@@ -244,7 +244,7 @@
 (defmethod app-folder ((app xul-application))
   (pathname (format nil "/tmp/~A/" (name app))))
 
-(defun run-app (app)
+(defun run-app (app &key (in-thread t))
   (let ((*app* app))
     (let ((app-folder (app-folder app)))
       
@@ -255,5 +255,13 @@
       (start-websocket-server)
       (start-resource-listener)
 
-      ;; Run    
-      (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))))
+      ;; Run
+      (flet ((run ()
+	       (sb-ext:run-program *xul-runner*
+				   (list "-app"
+					 (format nil"~Aapplication.ini"
+						 app-folder)))))
+	(if in-thread
+	    (bordeaux-threads:make-thread #'run)
+	    (run))
+	app))))
