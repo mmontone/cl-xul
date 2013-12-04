@@ -62,6 +62,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 	       (:file "websocket")
 	       (:file "xul")
 	       (:file "events")
+	       (:file "dialog")
 	       (:file "component")
 	       (:module widgets :components
 			((:file "widget")
