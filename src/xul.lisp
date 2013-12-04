@@ -247,67 +247,13 @@
 (defun run-app (app)
   (let ((*app* app))
     (let ((app-folder (app-folder app)))
+      
+      ;; Deploy the application
       (make-app-folder app app-folder)
 
-      (clws:register-global-resource
-       "/echo"
-       (make-instance 'echo-resource :app app)
-					;(clws:origin-prefix "http://127.0.0.1" "http://localhost")
-					;(clws:origin-prefix "ws://127.0.0.1" "ws://localhost")
-       #'ws::any-origin
-       )
-
       ;; Start a web socket connection
-      (bordeaux-threads:make-thread
-       (lambda ()
-	 (clws:run-server 9998))
-       :name "websockets server")
+      (start-websocket-server)
+      (start-resource-listener)
 
-      (bordeaux-threads:make-thread
-       (lambda ()
-	 (clws:run-resource-listener
-	  (clws:find-global-resource "/echo")))
-       :name "resource listener for /echo")
-    
+      ;; Run    
       (sb-ext:run-program *xul-runner* (list "-app" (format nil"~Aapplication.ini" app-folder))))))
-
-(defparameter *client* nil)
-
-(defclass echo-resource (clws:ws-resource)
-  ((appl :initarg :app
-	 :initform (error "Provide the application")
-	 :accessor app)))
-
-(defmethod clws:resource-client-connected ((res echo-resource) client)
-  #+nil(break "got connection on echo server from ~s : ~s~%"
-	  (clws:client-host client)
-	  (clws:client-port client))
-  (format t "got connection on echo server from ~s : ~s~%"
-	  (clws:client-host client)
-	  (clws:client-port client))
-  t)
-
-(defmethod clws:resource-client-disconnected ((resource echo-resource) client)
-  ;(break "Client disconnected from resource ~A: ~A~%" resource client)
-  (format t "Client disconnected from resource ~A: ~A~%" resource client))  
-
-(defmethod clws:resource-received-text ((res echo-resource) client message)
-  ;(break "got frame ~s from client ~s" message client)
-  (format t "got frame ~s from client ~s" message client)
-  ;(clws:write-to-client-text client message)
-  (let ((object (ignore-errors (json:decode-json-from-string message))))
-    ;(break "~A" object)
-    (let ((*client* client))
-      (if (not object)
-	  (error "~A could'nt be parsed" message)
-					;else
-	  (cond
-	    ((equalp (cdr (assoc :type object)) "callback")
-	     (handle-callback object))
-	    (t (break "Don't know how to handle ~A" object))))
-      t)))
-
-(defmethod clws:resource-received-binary((res echo-resource) client message)
-  ;(break "got binary frame ~s from client ~s" (length message) client)
-  (format t "got binary frame ~s from client ~s" (length message) client)
-  (clws:write-to-client-binary client message))

@@ -59,6 +59,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "html"))
 			:serial t)
 	       (:file "util")
+	       (:file "websocket")
 	       (:file "xul")
 	       (:file "events")
 	       (:file "component")

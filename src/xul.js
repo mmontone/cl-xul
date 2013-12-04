@@ -5,7 +5,7 @@
 // }
 // DebuggerServer.openListener(6000);
 
-var connection = new WebSocket('ws://localhost:9998/echo');
+var connection = new WebSocket('ws://localhost:9998/xul');
 
 // When the connection is open, send some data to the server
 connection.onopen = function () {
