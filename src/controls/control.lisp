@@ -74,35 +74,35 @@
 (define-xul-element xul-control (xul-element)
   ())
 
-(defmethod element-name ((xul-element xul-element))
+(defmethod element-name ((xml-element xml-element))
   (string-downcase
    (remove #\-
 	   (symbol-name
-	    (class-name (class-of xul-element))))))
+	    (class-name (class-of xml-element))))))
 
-(defgeneric serialize-xul (xul-element))
+(defgeneric serialize-xul (xml-element))
 
-(defmethod serialize-xul ((xul-element xul-element))
+(defmethod serialize-xul ((xml-element xml-element))
   ;; Validation
-  (when (and (content xul-element)
-		 (and (typep xul-element 'container-element)
-		      (children xul-element)))
+  (when (and (content xml-element)
+		 (and (typep xml-element 'container-element)
+		      (children xml-element)))
 	(error "Invalid xul element ~A. Cannot contain text and children at the same time"
-	       xul-element))
+	       xml-element))
       
   ;; Generic serialization
-  (let ((element-name (element-name xul-element)))
+  (let ((element-name (element-name xml-element)))
     (cxml:with-element element-name
-      (loop for attribute in (attributes (class-of xul-element))
-	 when (slot-boundp xul-element (closer-mop:slot-definition-name attribute))
+      (loop for attribute in (attributes (class-of xml-element))
+	 when (slot-boundp xml-element (closer-mop:slot-definition-name attribute))
 	 do
 	   (cxml:attribute (attribute-name attribute)
 			   (serialize-xml-value
-			    (slot-value xul-element (closer-mop:slot-definition-name attribute)))))
-      (when (content xul-element)
-	(cxml:text (content xul-element)))
-      (when (typep xul-element 'container-element)
-	(loop for child in (children xul-element)
+			    (slot-value xml-element (closer-mop:slot-definition-name attribute)))))
+      (when (content xml-element)
+	(cxml:text (content xml-element)))
+      (when (typep xml-element 'container-element)
+	(loop for child in (children xml-element)
 	     do (serialize-xul child))))))
 
 (defmethod serialize-xml-value ((value (eql nil)))

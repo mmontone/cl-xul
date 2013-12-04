@@ -76,16 +76,16 @@
 	     (<:image (src= (asdf:system-relative-pathname
 			     :cl-xul-test
 			     "test/showcase/images/lisplogo_warning2_256.png")))
-	     (<:div
-	       (<:style= "background-color:white;margin-left:10px; padding:10px;")
-	       (<:h1 "CL-XUL")
-	       (<:p "Library for Mozilla XUL GUI programming in Common Lisp")
-	       (<:p "Project homepage: ")
-	       (<:a (<:style= "color:blue;")
-		    (<:href= "https://github.com/mmontone/cl-xul")
+	     (<html:div
+	       (<html:style= "background-color:white;margin-left:10px; padding:10px;")
+	       (<html:h1 "CL-XUL")
+	       (<html:p "Library for Mozilla XUL GUI programming in Common Lisp")
+	       (<html:p "Project homepage: ")
+	       (<html:a (<:style= "color:blue;")
+		    (<html:href= "https://github.com/mmontone/cl-xul")
 		    ;(<:target= "_blank")
 		    "https://github.com/mmontone/cl-xul")
-	       (<:p "Author: Mariano Montone"))))))
+	       (<html:p "Author: Mariano Montone"))))))
 
 (defparameter *showcase-pages*
   (flet ((source (filename)

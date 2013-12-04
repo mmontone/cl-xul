@@ -32,6 +32,10 @@
   (:nicknames :<)
   (:use :cl))
 
+(defpackage html-builder
+  (:nicknames :<html)
+  (:use :cl))
+
 (defpackage xul-widgets
   (:nicknames :w)
   (:use :cl))
