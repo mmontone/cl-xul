@@ -33,11 +33,19 @@
 			    ;; We assume this is a file, not a directory
 			    (<:tree-item
 			      (<:tree-row
-				(<:tree-cell (<:label= (file-namestring pathname)))))
+				(<:tree-cell
+				  (<:label= (file-namestring pathname))
+				  (src= (asdf:system-relative-pathname
+					 :cl-xul-test
+					 "test/showcase/images/x-office-document.png")))))
 			    ;; Else, we assume it is a directory
 			    (<:tree-item (<:container= t)
 					 (<:tree-row
-					   (<:tree-cell (<:label= (car (last (pathname-directory pathname))))))
+					   (<:tree-cell
+					     (<:label= (car (last (pathname-directory pathname))))
+					     (src= (asdf:system-relative-pathname
+						    :cl-xul-test
+						    "test/showcase/images/folder-open-3.png"))))
 					 (<:tree-children
 					   (loop for pathname in (cl-fad:list-directory pathname)
 					      do (render-pathname pathname)))))))
