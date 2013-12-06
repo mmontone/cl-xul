@@ -43,6 +43,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "buttons")
 			 (:file "checkboxes")
 			 (:file "radiobuttons")
+			 (:file "text-boxes")
 			 (:file "images")
 			 (:file "lists")
 			 (:file "trees")

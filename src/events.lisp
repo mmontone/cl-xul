@@ -87,3 +87,27 @@
 
 (defmacro on-select=* ((value) &body body)
   `(on-select= (lambda (,value) ,@body)))
+
+(defun on-input= (function)
+  (let ((handler-id
+	 (register-callback-handler
+	  (lambda (callback)
+	    (funcall function (cdr (assoc :value callback)))))))
+    (when (or (not (slot-boundp *current-element* 'id))
+	      (not (id *current-element*)))
+      (setf (id *current-element*)
+	    (symbol-name (gensym))))
+    (let ((callback (list :type "callback"
+			  :id handler-id
+			  :app (name *app*)
+			  :value (format nil "document.getElementById(\\\"~A\\\").value;"
+					 (id *current-element*)))))
+			  
+      (<:oninput= 
+       (format nil "sendMessage('~A');"
+	       (json:encode-json-plist-to-string callback))
+       ))))
+
+(defmacro on-input=* ((value) &body body)
+  `(on-input= (lambda (,value) ,@body)))
+

@@ -17,6 +17,8 @@
 	   #:on-change=*
 	   #:on-select=
 	   #:on-select=*
+	   #:on-input=
+	   #:on-input=*
 	   #:file
 	   #:src=
 	   #:image=

@@ -99,6 +99,9 @@
       ("Radio buttons"
        :component radio-buttons-showcase
        :source ,(source "radiobuttons.lisp"))
+      ("Text boxes"
+       :component text-boxes-showcase
+       :source ,(source "text-boxes.lisp"))
       ("Images"
        :component images-showcase
        :source ,(source "images.lisp"))
