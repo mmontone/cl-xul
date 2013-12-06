@@ -81,5 +81,31 @@
 	    "(no input yet)")))))
 
 (defun render-list-multiple-columns (comp)
-  (declare (ignore comp)))
-
+  (declare (ignore comp))
+  (<:group-box
+    (<:flex= 1)
+    (<:caption (<:label= "With multiple columns and a scrollbar"))
+    (let ((headers (list "Name" "Sex" "Color" "Description")))
+      (<:list-box
+	(<:rows= 5)
+	(<:list-cols
+	  (loop for header in headers
+	     do
+	       (progn
+		 (<:list-col (<:flex= 1))
+		 (<:splitter (<:class*= "tree-splitter")))))
+	(<:list-head
+	  (loop for header in headers
+	     do
+	       (progn
+		 (<:list-header (<:label= header)))))
+	(let ((data '((:name "Pearl" :sex "Female" :color "Gray" :desc "Frumpy")
+		      (:name "Aramis" :sex "Male" :color "Black" :desc "Cute")
+		      (:name "Cosmo" :sex "Female" :color "White" :desc "Round"))))
+	  (loop for item in data
+	     do 
+	       (<:list-item
+		 (<:label (<:value= (getf item :name)))
+		 (<:label (<:value= (getf item :sex)))
+		 (<:label (<:value= (getf item :color)))
+		 (<:label (<:value= (getf item :desc))))))))))
