@@ -122,9 +122,9 @@
 	       (<html:p "Library for Mozilla XUL GUI programming in Common Lisp")
 	       (<html:p "Project homepage: ")
 	       (<html:a (<:style= "color:blue;")
-		    (<html:href= "https://github.com/mmontone/cl-xul")
+		    (<html:href= "http://mmontone.github.io/cl-xul")
 		    ;(<:target= "_blank")
-		    "https://github.com/mmontone/cl-xul")
+		    "http://mmontone.github.io/cl-xul")
 	       (<html:p "Author: Mariano Montone"))))))
 
 (defclass showcase-application (xul-application)
