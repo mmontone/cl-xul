@@ -108,6 +108,9 @@
       ("Lists"
        :component lists-showcase
        :source ,(source "lists.lisp"))
+      ("Tabs"
+       :component tabs-showcase
+       :source ,(source "tabs.lisp"))
       ("Trees"
        :component trees-showcase
        :source ,(source "trees.lisp"))

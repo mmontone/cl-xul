@@ -46,6 +46,7 @@ OTHER DEALINGS IN THE SOFTWARE."
 			 (:file "text-boxes")
 			 (:file "images")
 			 (:file "lists")
+			 (:file "tabs")
 			 (:file "trees")
 			 (:file "html")
 			 (:file "dialogs")
