@@ -11,13 +11,13 @@
 		     (<:group-box
 		       (<:tab-box (<:flex= 1)
 				  (<:tabs
-				    (<:tab (<:label= "Default")
-					   (<:label= "Tab")
-					   (<:label= "Orientation"))
-				    (<:tab-panels (<:flex= 1)
-						  (<:label (<:value= "Default"))
-						  (<:label (<:value= "Tab"))
-						  (<:label (<:value= "Orientation")))))))
+				    (<:tab (<:label= "Default"))
+				    (<:tab (<:label= "Tab"))
+				    (<:tab (<:label= "Orientation")))
+				  (<:tab-panels (<:flex= 1)
+						(<:label (<:value= "Default"))
+						(<:label (<:value= "Tab"))
+						(<:label (<:value= "Orientation"))))))
 		   (<:group-box
 		     (<:description "This one has been turned on its head so that the tabs are on the bottom")
 		     (<:group-box
