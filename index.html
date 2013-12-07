@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Cl-XUL : Mozilla XUL user interface programming in Common Lisp" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Cl-XUL</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mmontone/cl-xul">View on GitHub</a>
+
+          <h1 id="project_title">Cl-XUL</h1>
+          <h2 id="project_tagline">Mozilla XUL user interface programming in Common Lisp</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mmontone/cl-xul/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mmontone/cl-xul/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="cl-xul" class="anchor" href="#cl-xul"><span class="octicon octicon-link"></span></a>CL-XUL</h2>
+
+<p><a href="https://github.com/mmontone/cl-xul"><strong>CL-XUL</strong></a> is a library that helps to create <a href="https://developer.mozilla.org/en/docs/XUL"><strong>Mozilla XUL</strong></a> user interfaces in Common Lisp. </p>
+
+<p>It uses <a href="http://www.cliki.net/IOlib">IOlib</a> based <a href="http://www.cliki.net/clws">clws</a> library for the communication between the Mozilla XULRunner and Common Lisp via <a href="http://en.wikipedia.org/wiki/WebSocket">web sockets</a>. Because of the IOlib limitation, it works only on Linux at the moment, until a platform independent implementation of websockets is found. Also, I've only tried it from <a href="http://www.sbcl.org">SBCL</a> so far.</p>
+
+<p>CL-XUL implements a component-based architecture, standard widgets support, easy communication between client and server and automatic view updates and a readable description of GUI directly in Common Lisp, with no need of external XML files.  </p>
+
+<p>Its implementation can be considered similar to that of the <a href="http://code.google.com/p/phobos-framework/">Phobos</a> Smalltalk framework,  and to the javascript implementation <a href="https://code.google.com/p/xuljet/">XULJet</a>, although it is not quite the same.</p>
+
+<p>This is still work in progress, and there's no documentation at the moment (it is coming soon, though) but a demo can be tried. For those interested, point the <code>cl-xul.asd</code> and <code>cl-xul-test.asd</code> system definition files from <code>./sbcl/system (ln -s &lt;system definition file path&gt;)</code> and then evaluate:</p>
+
+<p><code>(require :cl-xul-test)</code></p>
+
+<p>and</p>
+
+<p><code>(xul-test:showcase)</code></p>
+
+<p>from your lisp listener. </p>
+
+<p>You will also need to satisfy the system dependencies:</p>
+
+<ul>
+<li>alexandria</li>
+<li>log5</li>
+<li>parenscript</li>
+<li>cxml</li>
+<li>cl-fad</li>
+<li>closer-mop</li>
+<li>clws</li>
+<li>cl-json</li>
+<li>md5</li>
+</ul><p>The easiest way of installing those packages is via <a href="http://www.quicklisp.org/">Quicklisp</a>.</p>
+
+<p>This library is under the MIT licence.</p>
+
+<h2>
+<a name="screenshots" class="anchor" href="#screenshots"><span class="octicon octicon-link"></span></a>Screenshots</h2>
+
+<p><img src="https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot1.png" alt="Screenshot 1"></p>
+
+<p><img src="https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot2.png" alt="Screenshot 2"></p>
+
+<p><img src="https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot3.png" alt="Screenshot 3"></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Cl-XUL maintained by <a href="https://github.com/mmontone">mmontone</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
