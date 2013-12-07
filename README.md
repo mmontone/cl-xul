@@ -34,3 +34,12 @@ You will also need to satisfy the system dependencies:
 The easiest way of installing those packages is via [Quicklisp](http://www.quicklisp.org/).
 
 This library is under the MIT licence.
+
+Screenshots
+-----------
+
+![Screenshot 1](https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot1.png)
+
+![Screenshot 2](https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot2.png)
+
+![Screenshot 3](https://raw.github.com/mmontone/cl-xul/master/doc/images/screenshot3.png)
