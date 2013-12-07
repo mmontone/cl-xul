@@ -75,7 +75,6 @@ OTHER DEALINGS IN THE SOFTWARE."
     :depends-on
     (:alexandria
      :log5
-     :cl-who
      :cl-fad
      :parenscript
      :cxml

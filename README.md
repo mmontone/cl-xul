@@ -23,7 +23,6 @@ You will also need to satisfy the system dependencies:
 
 - alexandria
 - log5
-- cl-who
 - parenscript
 - cxml
 - cl-fad
