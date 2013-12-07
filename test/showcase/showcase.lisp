@@ -1,5 +1,45 @@
 (in-package :xul-test)
 
+(defparameter *showcase-pages*
+  (flet ((source (filename)
+	   (asdf:system-relative-pathname :cl-xul (format nil "test/showcase/~A" filename))))
+    `(("Buttons"
+       :component buttons-showcase
+       :source ,(source "buttons.lisp"))
+      ("Checkboxes"
+       :component checkboxes-showcase
+       :source ,(source "checkboxes.lisp"))
+      ("Radio buttons"
+       :component radio-buttons-showcase
+       :source ,(source "radiobuttons.lisp"))
+      ("Text boxes"
+       :component text-boxes-showcase
+       :source ,(source "text-boxes.lisp"))
+      ("Images"
+       :component images-showcase
+       :source ,(source "images.lisp"))
+      ("Lists"
+       :component lists-showcase
+       :source ,(source "lists.lisp"))
+      ("Tabs"
+       :component tabs-showcase
+       :source ,(source "tabs.lisp"))
+      ("Trees"
+       :component trees-showcase
+       :source ,(source "trees.lisp"))
+      ("Dialogs"
+       :component dialogs-showcase
+       :source ,(source "dialogs.lisp"))
+      ("HTML"
+       :component html-showcase
+       :source ,(source "html.lisp"))
+      ("Components"
+       :component components-showcase
+       :source ,(source "components.lisp"))
+      ("Embedded"
+       :component showcase
+       :source ,(source "showcase.lisp")))))
+
 (defun file-string (path)
   (with-open-file (stream path)
     (let ((data (make-string (file-length stream))))
@@ -86,46 +126,6 @@
 		    ;(<:target= "_blank")
 		    "https://github.com/mmontone/cl-xul")
 	       (<html:p "Author: Mariano Montone"))))))
-
-(defparameter *showcase-pages*
-  (flet ((source (filename)
-	   (asdf:system-relative-pathname :cl-xul (format nil "test/showcase/~A" filename))))
-    `(("Buttons"
-       :component buttons-showcase
-       :source ,(source "buttons.lisp"))
-      ("Checkboxes"
-       :component checkboxes-showcase
-       :source ,(source "checkboxes.lisp"))
-      ("Radio buttons"
-       :component radio-buttons-showcase
-       :source ,(source "radiobuttons.lisp"))
-      ("Text boxes"
-       :component text-boxes-showcase
-       :source ,(source "text-boxes.lisp"))
-      ("Images"
-       :component images-showcase
-       :source ,(source "images.lisp"))
-      ("Lists"
-       :component lists-showcase
-       :source ,(source "lists.lisp"))
-      ("Tabs"
-       :component tabs-showcase
-       :source ,(source "tabs.lisp"))
-      ("Trees"
-       :component trees-showcase
-       :source ,(source "trees.lisp"))
-      ("Dialogs"
-       :component dialogs-showcase
-       :source ,(source "dialogs.lisp"))
-      ("HTML"
-       :component html-showcase
-       :source ,(source "html.lisp"))
-      ("Components"
-       :component components-showcase
-       :source ,(source "components.lisp"))
-      ("Embedded"
-       :component showcase
-       :source ,(source "showcase.lisp")))))
 
 (defclass showcase-application (xul-application)
   ()
