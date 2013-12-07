@@ -74,9 +74,9 @@ OTHER DEALINGS IN THE SOFTWARE."
     :serial t
     :depends-on
     (:alexandria
-     :hunchentoot
      :log5
      :cl-who
+     :cl-fad
      :parenscript
      :cxml
      :closer-mop
