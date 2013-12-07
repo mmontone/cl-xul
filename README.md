@@ -1,7 +1,7 @@
 CL-XUL
 ------
 
-[**CL-XUL**](https://github.com/mmontone/cl-xul) is a Common Lisp library that helps to create [**Mozilla XUL**](https://developer.mozilla.org/en/docs/XUL) user interfaces.
+[**CL-XUL**](https://github.com/mmontone/cl-xul) is a library that helps to create [**Mozilla XUL**](https://developer.mozilla.org/en/docs/XUL) user interfaces in Common Lisp.
 
 It uses [IOlib](http://www.cliki.net/IOlib) based [clws](http://www.cliki.net/clws) library for the communication between the Mozilla XULRunner and Common Lisp via [web sockets](http://en.wikipedia.org/wiki/WebSocket). Because of the IOlib limitation, it works only on Linux at the moment, until a platform independent implementation of websockets is found. Also, I've only tried it from [SBCL](http://www.sbcl.org) so far.
 
