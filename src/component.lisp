@@ -154,11 +154,18 @@
     (loop for child being the hash-values of (children component)
 	 do (mark-clean child recursive-p))))
 
-(defun add-component (component slot child-component)
-  (setf (gethash slot (children component))
-	child-component)
-  (setf (parent child-component) component)
-  (mark-dirty component))
+(defgeneric add-component (component thing &rest args))
+
+(defmethod add-component (component (slot symbol) &rest args)
+  (let ((child-component (first args)))
+    (setf (gethash slot (children component))
+	  child-component)
+    (setf (parent child-component) component)
+    (mark-dirty component)))
+
+(defmethod add-component (component (child component) &rest args)
+  (declare (ignore args))
+  (add-component component (gensym "CHILD") child))
 
 (defmethod remove-component (component (slot symbol))
   (remhash slot (children component))
