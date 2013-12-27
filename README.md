@@ -9,7 +9,12 @@ CL-XUL implements a component-based architecture, standard widgets support, easy
 
 Its implementation can be considered similar to that of the [Phobos](http://code.google.com/p/phobos-framework/) Smalltalk framework,  and to the javascript implementation [XULJet](https://code.google.com/p/xuljet/), although it is not quite the same.
 
-This is still work in progress, and there's no documentation at the moment (it is coming soon, though) but a demo can be tried. For those interested, point the `cl-xul.asd` and `cl-xul-test.asd` system definition files from `./sbcl/system (ln -s <system definition file path>)` and then evaluate:
+This is still work in progress, and there's no documentation at the moment (it is coming soon, though) but a demo can be tried. 
+
+As of December 26 of 2013, CL-XUL can be obtained from [Quicklisp](http://www.quicklisp.org/).
+Evaluate `(ql:quickload :cl-xul)` to download and install the system, and `(ql:quickload :cl-xul-test)` followed by `(xul-test:showcase)` to run the demo.
+
+Alternatively, download the source code from here and point `cl-xul.asd` and `cl-xul-test.asd` system definition files from `./sbcl/system (ln -s <system definition file path>)` and then evaluate:
 
 `(require :cl-xul-test)`
 
