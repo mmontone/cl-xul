@@ -34,7 +34,7 @@
         <h2>
 <a name="cl-xul" class="anchor" href="#cl-xul"><span class="octicon octicon-link"></span></a>CL-XUL</h2>
 
-<p><a href="https://github.com/mmontone/cl-xul"><strong>CL-XUL</strong></a> is a library that helps to create <a href="https://developer.mozilla.org/en/docs/XUL"><strong>Mozilla XUL</strong></a> user interfaces in Common Lisp. </p>
+<p><a href="https://github.com/mmontone/cl-xul"><strong>CL-XUL</strong></a> is a library that helps to create <a href="https://developer.mozilla.org/en/docs/XUL"><strong>Mozilla XUL</strong></a> user interfaces in Common Lisp.</p>
 
 <p>It uses <a href="http://www.cliki.net/IOlib">IOlib</a> based <a href="http://www.cliki.net/clws">clws</a> library for the communication between the Mozilla XULRunner and Common Lisp via <a href="http://en.wikipedia.org/wiki/WebSocket">web sockets</a>. Because of the IOlib limitation, it works only on Linux at the moment, until a platform independent implementation of websockets is found. Also, I've only tried it from <a href="http://www.sbcl.org">SBCL</a> so far.</p>
 
@@ -42,7 +42,12 @@
 
 <p>Its implementation can be considered similar to that of the <a href="http://code.google.com/p/phobos-framework/">Phobos</a> Smalltalk framework,  and to the javascript implementation <a href="https://code.google.com/p/xuljet/">XULJet</a>, although it is not quite the same.</p>
 
-<p>This is still work in progress, and there's no documentation at the moment (it is coming soon, though) but a demo can be tried. For those interested, point the <code>cl-xul.asd</code> and <code>cl-xul-test.asd</code> system definition files from <code>./sbcl/system (ln -s &lt;system definition file path&gt;)</code> and then evaluate:</p>
+<p>This is still work in progress, and there's no documentation at the moment (it is coming soon, though) but a demo can be tried. </p>
+
+<p>As of December 26 of 2013, CL-XUL can be obtained from <a href="http://www.quicklisp.org/">Quicklisp</a>.
+Evaluate <code>(ql:quickload :cl-xul)</code> to download and install the system, and <code>(ql:quickload :cl-xul-test)</code> followed by <code>(xul-test:showcase)</code> to run the demo.</p>
+
+<p>Alternatively, download the source code from here and point <code>cl-xul.asd</code> and <code>cl-xul-test.asd</code> system definition files from <code>./sbcl/system (ln -s &lt;system definition file path&gt;)</code> and then evaluate:</p>
 
 <p><code>(require :cl-xul-test)</code></p>
 
