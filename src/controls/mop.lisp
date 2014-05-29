@@ -4,7 +4,7 @@
   ())
 
 (defmethod attributes ((class xul-class))
-  (loop for slot in (sb-mop:class-slots class)
+  (loop for slot in (closer-mop:class-slots class)
      when (and (typep slot 'xul-slot-definition)
 	       (is-attribute slot))
        collect slot))
@@ -37,7 +37,7 @@
       (slot-value slot 'attribute-name)
       ; else
       ; convert the-slot-name to theslotname
-      (string-downcase (remove #\- (symbol-name (sb-mop:slot-definition-name slot))))))
+      (string-downcase (remove #\- (symbol-name (closer-mop:slot-definition-name slot))))))
       
 (defclass xul-direct-slot-definition (xul-slot-definition closer-mop:standard-direct-slot-definition)
   ())
@@ -105,12 +105,12 @@
       (setf (effective-slot-of method) effective-slot))))
 
 (defun ensure-accessors-for (class)
-  (loop for effective-slot in (sb-mop:class-slots class)
+  (loop for effective-slot in (closer-mop:class-slots class)
         when (and (typep effective-slot 'xul-effective-slot-definition)
 		  (is-attribute effective-slot)) do
        (progn
-	 (ensure-accessor-for class (sb-mop:slot-definition-name effective-slot) effective-slot :reader)
-	 (ensure-accessor-for class `(setf ,(sb-mop:slot-definition-name effective-slot)) effective-slot :writer))))
+	 (ensure-accessor-for class (closer-mop:slot-definition-name effective-slot) effective-slot :reader)
+	 (ensure-accessor-for class `(setf ,(closer-mop:slot-definition-name effective-slot)) effective-slot :writer))))
         
 (defmethod closer-mop:finalize-inheritance :after ((class xul-class))
   ;; Ensure accessors for the attributes
