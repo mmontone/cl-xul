@@ -78,6 +78,7 @@
 	  (list (intern (symbol-name (closer-mop:slot-definition-name slot))
 			:keyword)))))      
 
+#-abcl
 (defun ensure-accessor-for (class accessor-name effective-slot type)
   (let* ((gf (ensure-generic-function accessor-name :lambda-list (ecase type
                                                                    (:reader '(object))
@@ -103,6 +104,58 @@
       (declare (ignorable method))
       #+ensure-method-supports-method-class
       (setf (effective-slot-of method) effective-slot))))
+
+;; There's a bug in ABCL when calling 'compile' function. The 'compile' function
+;; is called from closer-mop:ensure-method. So, here we avoid closer-mop:ensure-method
+;; and define our own ensure-method function, which doesn't call compile.
+#+abcl
+(defun ensure-accessor-for (class accessor-name effective-slot type)
+  (let* ((gf (ensure-generic-function accessor-name :lambda-list (ecase type
+                                                                   (:reader '(object))
+                                                                   (:writer '(new-value object)))))
+         (specializers (ecase type
+                         (:reader (list class))
+                         (:writer (list (find-class 't) class))))
+					;(current-method (find-method gf '() specializers nil))
+	 )
+    (let  ((method (abcl-ensure-method gf
+				       (ecase type
+					 (:reader
+					  `(lambda (object)
+					     (declare (optimize (speed 1))) ; (speed 1) to ignore compiler notes when defining accessors
+					     (slot-value object ',(closer-mop:slot-definition-name effective-slot))))
+					 (:writer
+					  `(lambda (new-value object)
+					     (declare (optimize (speed 1))) ; (speed 1) to ignore compiler notes when defining accessors
+					     (setf (slot-value object ',(closer-mop:slot-definition-name effective-slot)) new-value))))
+				       :specializers specializers
+				       #+ensure-method-supports-method-class :method-class
+				       #+ensure-method-supports-method-class (find-class 'xul-reader-method))))
+      (declare (ignorable method))
+      #+ensure-method-supports-method-class
+      (setf (effective-slot-of method) effective-slot))))
+
+#+abcl
+(defun abcl-ensure-method (gf lambda-expression
+			   &key (method-class (closer-mop::generic-function-method-class gf))
+			     (qualifiers ())
+			     (lambda-list (cadr lambda-expression))
+			     (specializers (closer-mop::required-args lambda-list (constantly (find-class 't)))))
+  (multiple-value-bind
+      (method-lambda method-args)
+      (closer-mop:make-method-lambda
+       gf (closer-mop:class-prototype method-class)
+       lambda-expression ())
+    (let ((method (apply #'make-instance
+                         method-class
+                         :qualifiers qualifiers
+                         :lambda-list lambda-list
+                         :specializers specializers
+                         :function (coerce method-lambda 'function)
+                         method-args)))
+      (closer-mop::add-method gf method)
+      method)))
+
 
 (defun ensure-accessors-for (class)
   (loop for effective-slot in (closer-mop:class-slots class)
