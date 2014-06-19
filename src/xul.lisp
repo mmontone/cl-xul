@@ -244,6 +244,10 @@
 (defmethod app-folder ((app xul-application))
   (pathname (format nil "/tmp/~A/" (name app))))
 
+(defun run-program (program args)
+  #+sbcl(sb-ext:run-program program args)
+  #+abcl(system:run-program program args))
+
 (defun run-app (app &key (in-thread t))
   (let ((*app* app))
     (let ((app-folder (app-folder app)))
@@ -257,10 +261,10 @@
 
       ;; Run
       (flet ((run ()
-	       (sb-ext:run-program *xul-runner*
-				   (list "-app"
-					 (format nil"~Aapplication.ini"
-						 app-folder)))))
+	       (run-program *xul-runner*
+			    (list "-app"
+				  (format nil"~Aapplication.ini"
+					  app-folder)))))
 	(if in-thread
 	    (bordeaux-threads:make-thread #'run)
 	    (run))
