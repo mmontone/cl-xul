@@ -53,7 +53,7 @@
    (vendor :initarg :vendor
 	   :initform nil
 	   :accessor vendor
-	   :type string
+	   :type (or string null)
 	   :documentation "The application vendor.")
    (version :initarg :version
 	    :initform "1.0"
@@ -73,7 +73,7 @@
    (profile :initarg :profile
 	    :initform nil
 	    :accessor profile
-	    :type pathname
+	    :type (or pathname null)
 	    :documentation "Specifies the path to use for the application's profile, based within the user's application data directory. OPTIONAL. Example: Profile=MyAppData")
    (gecko-min-version :initarg :gecko-min-version
 		      :initform "1.8"
@@ -88,11 +88,11 @@
    (xul :initarg :xul
 	:initform nil
 	:accessor app-xul
-	:type xul-element)
+	:type (or xul-element null))
    (root-component :initarg :root-component
 		   :initform nil
 		   :accessor root-component
-		   :type component)
+		   :type (or component null))
    (javascripts :initarg :javascripts
 		:initform nil
 		:accessor javascripts)))

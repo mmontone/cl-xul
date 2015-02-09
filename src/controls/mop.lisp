@@ -71,12 +71,12 @@
 
 (defmethod initialize-instance :after ((slot xul-effective-slot-definition) &rest initargs)
   (declare (ignore initargs))
-  (when (and (is-attribute slot)
-	     (not (closer-mop:slot-definition-initargs slot)))
-    ;; Add the initarg
-    (setf (closer-mop:slot-definition-initargs slot)
-	  (list (intern (symbol-name (closer-mop:slot-definition-name slot))
-			:keyword)))))      
+  #-ccl(when (and (is-attribute slot)
+		  (not (closer-mop:slot-definition-initargs slot)))
+	 ;; Add the initarg
+	 (setf (closer-mop:slot-definition-initargs slot)
+	       (list (intern (symbol-name (closer-mop:slot-definition-name slot))
+			     :keyword)))))
 
 #-abcl
 (defun ensure-accessor-for (class accessor-name effective-slot type)
