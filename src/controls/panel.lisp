@@ -1,7 +1,7 @@
 (in-package :xul)
 
 (define-xul-element panel (container-element)
-  (backdrag (close* :attribute-name "close") consumeoutsideclicks fade flip ignorekeys label left level  noautofocus noautohide norestorefocus onpopuphidden onpopuphiding onpopupshowing onpopupshown (position* :attribute-name "position") titlebar top type)
+  (backdrag (close* :attribute-name "close") consumeoutsideclicks fade flip ignorekeys label left level  noautofocus noautohide norestorefocus onpopuphidden onpopuphiding onpopupshowing onpopupshown (position* :attribute-name "position") titlebar top (type* :attribute-name "type"))
   (:documentation "A panel is a used as a temporary floating popup window that may contain any type of content. It does not have any window decorations. When open, it floats above the window and may extend outside the border of the main window. Typically, it will be attached to a button using the button's type attribute so that when the button is pressed, the panel will be displayed. A panel may also be opened via a script using the openPopup method."))
 
 (define-xul-element group-box (container-element)
