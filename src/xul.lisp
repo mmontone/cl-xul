@@ -246,7 +246,8 @@
 
 (defun run-program (program args)
   #+sbcl(sb-ext:run-program program args)
-  #+abcl(system:run-program program args))
+  #+abcl(system:run-program program args)
+  #+ccl(ccl:run-program program args))
 
 (defun run-app (app &key (in-thread t))
   (let ((*app* app))
