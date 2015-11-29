@@ -64,7 +64,7 @@
 	 context-menu data-sources dir empty equal-size flags flex height hidden id
 	 insert-after insert-before left max-height max-width menu min-height min-width mouse-through
 	 observes ordinal
-	 (orient :type (or :horizontal :vertical) :documentation "Orientation") pack persist popup (position* :attribute-name "position") preference-editable query-type
+	 (orient :type (member :horizontal :vertical) :documentation "Orientation") pack persist popup (position* :attribute-name "position") preference-editable query-type
 	 ref remove-element sort-direction sort-resource sort-resource-2 status-text style
 	 template tooltip tooltip-text top uri wait-cursor width
 
